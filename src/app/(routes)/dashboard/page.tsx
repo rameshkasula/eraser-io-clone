@@ -16,20 +16,22 @@ const DashboardPage = (props: Props) => {
   const createUser = useMutation(api.user.createUser);
 
   async function checkUser() {
-    const result = await convex.query(api.user.getUser, { email: user?.email });
+    const result = await convex.query(api.user.getUser, {
+      email: user?.email ?? "",
+    });
     if (!result?.length) {
       createUser({
-        email: user?.email,
-        firstName: user?.given_name,
-        lastName: user?.family_name,
-        image: user?.picture,
+        email: user?.email ?? "",
+        firstName: user?.given_name ?? "",
+        lastName: user?.family_name ?? "",
+        image: user?.picture ?? "",
       })
         .then((res) => console.log("res", res))
         .catch((err) => console.log("err", err));
     }
   }
   React.useEffect(() => {
-    if (user) {
+    if (user?.email) {
       checkUser();
     }
   }, [user]);

@@ -47,8 +47,8 @@ const TeamsForm = (props: Props) => {
     console.log("team data", data);
     setLoading(true);
     createTeam({
-      teamName: data.name,
-      createdBy: user?.email,
+      teamName: data.name ?? "",
+      createdBy: user?.email ?? "",
     })
       .then((res) => {
         console.log("res", res);
