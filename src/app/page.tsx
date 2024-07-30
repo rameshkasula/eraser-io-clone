@@ -1,3 +1,5 @@
+"use client";
+
 import Banner from "@/shared/layouts/Banner";
 import Header from "@/shared/layouts/Header";
 

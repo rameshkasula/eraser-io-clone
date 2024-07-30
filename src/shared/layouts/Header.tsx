@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import { ArrowRightIcon } from "lucide-react";
+import {
+  RegisterLink,
+  LoginLink,
+} from "@kinde-oss/kinde-auth-nextjs/components";
 
 let navItems = [
   {
@@ -37,9 +41,12 @@ const Header = () => {
         </ul>
       </nav>
       <div className="flex items-center gap-6">
-        <Button variant="default" className="px-4 ">
-          Login
-        </Button>
+        <LoginLink>
+          <Button variant="default" className="px-4 ">
+            Login
+          </Button>
+        </LoginLink>
+
         <Button variant="outline" className="px-2 border-primary ">
           Try Eraser <ArrowRightIcon className="w-4 h-4 ml-2" />
         </Button>
