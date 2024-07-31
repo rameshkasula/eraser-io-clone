@@ -24,8 +24,7 @@ const Teams = (props: Props) => {
         //  className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
         x-chunk="dashboard-02-chunk-1 p-4 "
       >
-        {isLoading && "Loading..."}
-        <TeamsTable teamsList={teamsList} />
+        <TeamsTable isLoading={isLoading} teamsList={teamsList} />
       </div>
     </main>
   );

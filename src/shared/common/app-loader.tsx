@@ -12,7 +12,12 @@ export default function AppLoader({
   text?: string;
 }) {
   return (
-    <div className={cn("flex justify-center items-center", className)}>
+    <div
+      className={cn(
+        "flex flex-col justify-center items-center  gapy-y-2 ",
+        className ? className : "min-h-screen/2"
+      )}
+    >
       <Loader2 className="h-10 w-10 animate-spin" />
       {text && (
         <span className="font-semibold text-lg text-primary ">{text}</span>

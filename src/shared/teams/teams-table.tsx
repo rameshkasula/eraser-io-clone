@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/table";
 import moment from "moment";
 import { useRouter } from "next/navigation";
+import AppLoader from "../common/app-loader";
 const data: Payment[] = [
   {
     id: "m5gr84i9",
@@ -173,7 +174,13 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export default function TeamsTable({ teamsList }: { teamsList: any[] }) {
+export default function TeamsTable({
+  isLoading,
+  teamsList,
+}: {
+  isLoading: boolean;
+  teamsList: any[];
+}) {
   const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -272,7 +279,16 @@ export default function TeamsTable({ teamsList }: { teamsList: any[] }) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  <AppLoader text="Loading teams..." />
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

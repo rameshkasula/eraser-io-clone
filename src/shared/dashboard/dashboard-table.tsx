@@ -273,7 +273,7 @@ export default function DashboardTable({ isLaoding, filesList }: any) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  <AppLoader text="Loading..." />
+                  <AppLoader text="Loading files..." />
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows?.length ? (
