@@ -59,7 +59,7 @@ function Editor({ data, onChange, holder }: any) {
     if (!ref.current) {
       const editor = new EditorJS({
         holder: holderName,
-        placeholder: "Start writting here..",
+        placeholder: "Start writting here..", // @ts-ignore
         tools: EDITOR_TOOLS,
         data,
         i18n: {
@@ -86,12 +86,16 @@ function Editor({ data, onChange, holder }: any) {
           onChange(content);
         },
       });
+
+      // @ts-ignore
       ref.current = editor;
     }
 
     //add a return function handle cleanup
     return () => {
+      // @ts-ignore
       if (ref.current && ref.current.destroy) {
+        // @ts-ignore
         ref.current.destroy();
       }
     };

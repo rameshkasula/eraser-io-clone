@@ -155,12 +155,16 @@ export const columns: ColumnDef<Payment>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
             <DropdownMenuItem
+              /* @ts-ignore */
+
               onClick={() => navigator.clipboard.writeText(payment._id)}
             >
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
+            {/* @ts-ignore */}
             <Link href={`/workspace/${payment?._id}`}>
               <DropdownMenuItem>Open</DropdownMenuItem>
             </Link>

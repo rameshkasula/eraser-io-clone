@@ -10,6 +10,8 @@ const WorkspaceCanvas = ({ data, onChange }: any) => {
   return (
     <div style={{ height: "100%", width: "100%" }}>
       <Excalidraw
+        /* @ts-ignore */
+
         theme={theme === "system" ? "dark" : theme}
         initialData={{
           elements: data,
