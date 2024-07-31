@@ -55,6 +55,7 @@ const WorkSpace = ({ params }: { params: { field: string } }) => {
   const getFileData = async () => {
     setIsLoading(true);
     const result = await convex.query(api.file.getFileById, {
+      // @ts-ignore
       _id: params.field || "",
     });
 
@@ -78,6 +79,7 @@ const WorkSpace = ({ params }: { params: { field: string } }) => {
       let docResult, whiteboardResult;
       if (content) {
         docResult = await updateDocument({
+          // @ts-ignore
           _id: params.field || "",
           document: JSON.stringify(content),
         });
@@ -85,6 +87,7 @@ const WorkSpace = ({ params }: { params: { field: string } }) => {
 
       if (whiteboard) {
         whiteboardResult = await updateWhiteboard({
+          // @ts-ignore
           _id: params.field || "",
           whiteboard: JSON.stringify(whiteboard),
         });
