@@ -53,7 +53,7 @@ import {
   useKindeBrowserClient,
 } from "@kinde-oss/kinde-auth-nextjs";
 import * as React from "react";
-import useTeams, { TeamsState } from "@/hooks/teams-store";
+import useTeams, { Team, TeamsState } from "@/hooks/teams-store";
 import { useConvex } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -117,7 +117,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 <SelectContent>
                   <SelectGroup>
                     {teamsList?.length > 0 &&
-                      teamsList?.map((team) => (
+                      teamsList?.map((team: Team) => (
                         <SelectItem key={team._id} value={team._id}>
                           <div className="flex flex-1 justify-between items-center ">
                             <Avatar className="mr-2 h-8 w-8 ">

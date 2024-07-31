@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface Team {
+export interface Team {
   createdBy: string;
   teamName: string;
   _creationTime: number;

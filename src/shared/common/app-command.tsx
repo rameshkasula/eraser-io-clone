@@ -25,7 +25,7 @@ import useTeams from "@/hooks/teams-store";
 import { Input } from "@/components/ui/input";
 
 export default function AppCommand() {
-  const { commandOpen, setCommandOpen } = useTeams();
+  const { commandOpen, setCommandOpen }: any = useTeams();
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
@@ -36,7 +36,7 @@ export default function AppCommand() {
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, []);
+  }, [setCommandOpen]);
 
   return (
     <>
