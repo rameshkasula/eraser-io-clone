@@ -7,9 +7,12 @@ import { Button } from "@/components/ui/button";
 import { useConvex, useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import DataTable from "@/shared/common/data-table";
+import DashboardTable from "@/shared/dashboard/dashboard-table";
+import useTeams from "@/hooks/teams-store";
 type Props = {};
 
 const DashboardPage = (props: Props) => {
+  const { filesList }: any = useTeams();
   const { user } = useKindeBrowserClient();
   const convex = useConvex();
 
@@ -42,7 +45,7 @@ const DashboardPage = (props: Props) => {
         <h1 className="text-lg font-semibold md:text-2xl">Documents</h1>
       </div>
 
-      <DataTable />
+      <DashboardTable filesList={filesList} />
     </main>
   );
 };

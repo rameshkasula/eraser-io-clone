@@ -21,6 +21,12 @@ export interface TeamsState {
 
   commandOpen: boolean;
   setCommandOpen: (open: boolean) => void;
+
+  filesList: any[];
+  setFilesList: (filesList: any[]) => void;
+
+  createOpen: boolean;
+  setCreateOpen: (open: boolean) => void;
 }
 
 const useTeams = create(
@@ -36,6 +42,12 @@ const useTeams = create(
 
       commandOpen: false,
       setCommandOpen: (open: boolean) => set({ commandOpen: open }),
+
+      filesList: [],
+      setFilesList: (filesList: any[]) => set({ filesList }),
+
+      createOpen: false,
+      setCreateOpen: (open: boolean) => set({ createOpen: open }),
     }),
     {
       name: "teams-storage", // name of the item in the storage

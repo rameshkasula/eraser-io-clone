@@ -52,7 +52,7 @@ const TeamsForm = (props: Props) => {
     })
       .then((res) => {
         console.log("res", res);
-        toast("Team has been created.");
+        toast.success("Team has been created.");
         router.push(`/teams`);
       })
       .catch((err) => {

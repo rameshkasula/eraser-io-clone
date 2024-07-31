@@ -1,19 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  Bell,
-  CircleUser,
-  Command,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-} from "lucide-react";
+import { Bell, CircleUser, Menu, Package2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -41,7 +29,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { sidebarItems } from "@/lib/sidebar-items";
 import { cn } from "@/lib/utils";
@@ -56,8 +43,15 @@ import * as React from "react";
 import useTeams, { Team, TeamsState } from "@/hooks/teams-store";
 import { useConvex } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppCommand from "@/shared/common/app-command";
+import CreateFile from "@/shared/dashboard/create-file";
+import { Label } from "@/components/ui/label";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -69,6 +63,9 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     setIsLoading,
     selectedTeam,
     setSelectedTeam,
+    filesList,
+    setFilesList,
+    createOpen,
   }: any = useTeams();
   const convex = useConvex();
   const { user } = useKindeBrowserClient();
@@ -78,12 +75,22 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       const result = await convex.query(api.team.getAllTeams);
 
+      const filesResult = await convex.query(api.file.getFiles, {
+        teamId: selectedTeam ?? "",
+      });
+
+      console.log("filesResult", filesResult);
+
       setTeamsList([...result]);
+
+      setFilesList([...filesResult]);
       setIsLoading(false);
     }
 
     getTeamsList();
-  }, [user]);
+  }, [user, pathname, selectedTeam, createOpen]);
+
+  const progressValue = (filesList.length / 5) * 100;
 
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
@@ -105,7 +112,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             </div>
             <div className="flex-1">
               <Select
-                value={selectedTeam?._id}
+                value={selectedTeam}
                 onValueChange={(e) => {
                   setSelectedTeam(e);
                 }}
@@ -156,7 +163,24 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
               </nav>
             </div>
             <div className="mt-auto p-4">
-              <Progress className={cn("w-full my-2")} value={33} />
+              <CreateFile />
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Progress
+                    className={cn("w-full my-2")}
+                    color={progressValue > 100 ? "primary" : "success"}
+                    value={progressValue}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <Label className="w-full">
+                    {progressValue <= 100
+                      ? `${progressValue}% Used`
+                      : "100% Used"}
+                  </Label>
+                </TooltipContent>
+              </Tooltip>
+
               <Card x-chunk="dashboard-02-chunk-0">
                 <CardHeader className="p-2 pt-0 md:p-4">
                   <CardTitle>Upgrade to Pro</CardTitle>
@@ -199,16 +223,32 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                     >
                       <item.icon className="h-5 w-5" />
                       {item.name}
-                      {item.badge && (
+                      {item.href == "/teams" && (
                         <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                          6
+                          {teamsList.length}
                         </Badge>
                       )}
                     </Link>
                   ))}
                 </nav>
                 <div className="mt-auto">
-                  <Progress className={cn("w-full my-2")} value={33} />
+                  <CreateFile />
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Progress
+                        className={cn("w-full my-2")}
+                        color={progressValue > 100 ? "primary" : "success"}
+                        value={progressValue}
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <Label className="w-full">
+                        {progressValue <= 100
+                          ? `${progressValue}% Used`
+                          : "100% Used"}
+                      </Label>
+                    </TooltipContent>
+                  </Tooltip>
                   <Card>
                     <CardHeader>
                       <CardTitle>Upgrade to Pro</CardTitle>
@@ -239,6 +279,17 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   size="icon"
                   className="rounded-full"
                 >
+                  <Avatar>
+                    {/* <AvatarImage
+                      src={user?.picture ?? "https://github.com/shadcn.png"}
+                    /> */}
+                    {user && user.family_name && user.given_name && (
+                      <AvatarFallback>
+                        {user.given_name[0].toUpperCase() +
+                          user.family_name[0].toUpperCase()}
+                      </AvatarFallback>
+                    )}
+                  </Avatar>
                   <CircleUser className="h-5 w-5" />
                   <span className="sr-only">Toggle user menu</span>
                 </Button>
