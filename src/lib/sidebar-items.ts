@@ -1,21 +1,10 @@
-import {
-  Bell,
-  CircleUser,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-} from "lucide-react";
+import { CreditCard, LayoutGrid, ShoppingCart, Users } from "lucide-react";
 
 export const sidebarItems = [
   {
     name: "Dashboard",
     href: "/dashboard",
-    icon: Home,
+    icon: LayoutGrid,
   },
   {
     name: "Teams",
@@ -26,6 +15,6 @@ export const sidebarItems = [
   {
     name: "Subscription",
     href: "/subscription",
-    icon: ShoppingCart,
+    icon: CreditCard,
   },
 ];

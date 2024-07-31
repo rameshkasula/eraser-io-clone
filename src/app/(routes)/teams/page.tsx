@@ -5,6 +5,7 @@ import { useConvex } from "convex/react";
 import dynamic from "next/dynamic";
 import * as React from "react";
 import { api } from "../../../../convex/_generated/api";
+import useTeams, { TeamsState } from "@/hooks/teams-store";
 
 const TeamsTable = dynamic(() => import("@/shared/teams/teams-table"), {
   ssr: false,
@@ -12,19 +13,24 @@ const TeamsTable = dynamic(() => import("@/shared/teams/teams-table"), {
 type Props = {};
 
 const Teams = (props: Props) => {
-  const [teamsList, setTeamsList] = React.useState<any[]>([]);
+  const { teamsList, setTeamsList, isLoading, setIsLoading }: TeamsState =
+    useTeams<any>();
   const convex = useConvex();
   const { user } = useKindeBrowserClient();
 
-  async function getTeamsList() {
-    const result = await convex.query(api.team.getAllTeams);
-    console.log("result", result);
-    setTeamsList([...result]);
-  }
-
   React.useEffect(() => {
-    getTeamsList();
-  }, [user]);
+    async function getTeamsList() {
+      setIsLoading(true);
+      const result = await convex.query(api.team.getAllTeams);
+
+      setTeamsList([...result]);
+      setIsLoading(false);
+    }
+    if (teamsList.length == 0) {
+      getTeamsList();
+    }
+  }, [user, teamsList, convex]);
+
   return (
     <main className="flex flex-1 flex-col gap-2  lg:gap-4">
       <div className="flex items-center">
@@ -34,6 +40,7 @@ const Teams = (props: Props) => {
         //  className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
         x-chunk="dashboard-02-chunk-1 p-4 "
       >
+        {isLoading && "Loading..."}
         <TeamsTable teamsList={teamsList} />
       </div>
     </main>

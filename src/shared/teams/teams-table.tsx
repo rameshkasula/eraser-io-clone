@@ -134,10 +134,10 @@ export const columns: ColumnDef<Payment>[] = [
     id: "Creation At",
     header: () => <div className="text-right">Creation At</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("_creationTime"));
+      const amount: number = row.getValue("Creation At");
 
       // Format the amount as a dollar amount
-      const formatted = moment(amount).format("MMMM Do YYYY, h:mm:ss a");
+      const formatted = moment(amount).format("MMMM Do YYYY, hh:mm A");
 
       return <div className="text-right font-medium">{formatted}</div>;
     },
