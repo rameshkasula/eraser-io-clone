@@ -36,6 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import AppLoader from "../common/app-loader";
 
 const data: Payment[] = [
   {
@@ -164,8 +165,11 @@ export const columns: ColumnDef<Payment>[] = [
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            {/* @ts-ignore */}
-            <Link href={`/workspace/${payment?._id}`}>
+            <Link
+              /* @ts-ignore */
+
+              href={`/workspace/${payment?._id}?title=${payment?.fileName}`}
+            >
               <DropdownMenuItem>Open</DropdownMenuItem>
             </Link>
             {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
@@ -176,7 +180,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export default function DashboardTable({ filesList }: any) {
+export default function DashboardTable({ isLaoding, filesList }: any) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -263,7 +267,16 @@ export default function DashboardTable({ filesList }: any) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLaoding ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  <AppLoader text="Loading..." />
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

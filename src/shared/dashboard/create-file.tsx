@@ -66,7 +66,7 @@ export default function CreateFile() {
       <DialogTrigger asChild>
         <Button
           size="sm"
-          className="w-full"
+          className="w-full mb-2"
           onClick={() => setCreateOpen(true)}
           variant="outline"
         >

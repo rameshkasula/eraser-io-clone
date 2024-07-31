@@ -56,7 +56,7 @@ function Editor({ data, onChange, holder }: any) {
   //initialize editorjs
   useEffect(() => {
     //initialize editor if we don't have a reference
-    if (!ref.current) {
+    if (!ref.current && holderName) {
       const editor = new EditorJS({
         holder: holderName,
         placeholder: "Start writting here..", // @ts-ignore
@@ -101,7 +101,7 @@ function Editor({ data, onChange, holder }: any) {
     };
   }, [holderName]);
 
-  console.log("data", data);
+  // console.log("data", data);
 
   return (
     <>

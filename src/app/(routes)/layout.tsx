@@ -45,6 +45,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import AccountPopover from "@/shared/common/user-profile";
+import AppLoader from "@/shared/common/app-loader";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -86,7 +87,9 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   const progressValue = (filesList.length / 5) * 100;
 
   return (
-    <React.Suspense fallback={<div>Loading...</div>}>
+    <React.Suspense
+      fallback={<AppLoader text="Loading..." className="min-h-screen" />}
+    >
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <div className="hidden border-r bg-muted/40 md:block">
           <div className="flex h-full max-h-screen flex-col gap-2">
@@ -264,9 +267,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
               </SheetContent>
             </Sheet>
             <div className="w-full flex-1">
-              <form>
-                <AppCommand />
-              </form>
+              <form>{/* <AppCommand /> */}</form>
             </div>
             <ModeToggle />
             <AccountPopover user={user} />

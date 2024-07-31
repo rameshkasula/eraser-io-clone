@@ -12,7 +12,7 @@ import useTeams from "@/hooks/teams-store";
 type Props = {};
 
 const DashboardPage = (props: Props) => {
-  const { filesList }: any = useTeams();
+  const { filesList, isLoading }: any = useTeams();
   const { user } = useKindeBrowserClient();
   const convex = useConvex();
 
@@ -45,7 +45,7 @@ const DashboardPage = (props: Props) => {
         <h1 className="text-lg font-semibold md:text-2xl">Documents</h1>
       </div>
 
-      <DashboardTable filesList={filesList} />
+      <DashboardTable isLoading={isLoading} filesList={filesList} />
     </main>
   );
 };
