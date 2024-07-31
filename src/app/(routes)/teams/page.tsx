@@ -13,8 +13,7 @@ const TeamsTable = dynamic(() => import("@/shared/teams/teams-table"), {
 type Props = {};
 
 const Teams = (props: Props) => {
-  const { teamsList, setTeamsList, isLoading, setIsLoading }: any =
-    useTeams<any>();
+  const { teamsList, setTeamsList, isLoading, setIsLoading }: any = useTeams();
   const convex = useConvex();
   const { user } = useKindeBrowserClient();
 

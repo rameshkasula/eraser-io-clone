@@ -69,7 +69,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     setIsLoading,
     selectedTeam,
     setSelectedTeam,
-  }: any = useTeams<any>();
+  }: any = useTeams();
   const convex = useConvex();
   const { user } = useKindeBrowserClient();
 
