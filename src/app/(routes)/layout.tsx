@@ -83,7 +83,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     }
 
     getTeamsList();
-  }, [user, teamsList, convex]);
+  }, [user]);
 
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
