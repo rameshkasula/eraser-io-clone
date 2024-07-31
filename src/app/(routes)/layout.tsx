@@ -81,9 +81,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
       setTeamsList([...result]);
       setIsLoading(false);
     }
-    if (teamsList.length == 0) {
-      getTeamsList();
-    }
+
+    getTeamsList();
   }, [user, teamsList, convex]);
 
   return (

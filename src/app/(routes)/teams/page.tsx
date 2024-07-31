@@ -13,22 +13,7 @@ const TeamsTable = dynamic(() => import("@/shared/teams/teams-table"), {
 type Props = {};
 
 const Teams = (props: Props) => {
-  const { teamsList, setTeamsList, isLoading, setIsLoading }: any = useTeams();
-  const convex = useConvex();
-  const { user } = useKindeBrowserClient();
-
-  React.useEffect(() => {
-    async function getTeamsList() {
-      setIsLoading(true);
-      const result = await convex.query(api.team.getAllTeams);
-
-      setTeamsList([...result]);
-      setIsLoading(false);
-    }
-    if (teamsList.length == 0) {
-      getTeamsList();
-    }
-  }, [user, teamsList, convex]);
+  const { teamsList, isLoading }: any = useTeams();
 
   return (
     <main className="flex flex-1 flex-col gap-2  lg:gap-4">
