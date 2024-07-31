@@ -13,14 +13,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Select,
   SelectContent,
   SelectGroup,
@@ -52,6 +44,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import AccountPopover from "@/shared/common/user-profile";
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -79,7 +72,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
         teamId: selectedTeam ?? "",
       });
 
-      console.log("filesResult", filesResult);
+      // console.log("filesResult", filesResult);
 
       setTeamsList([...result]);
 
@@ -164,22 +157,24 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             </div>
             <div className="mt-auto p-4">
               <CreateFile />
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Progress
-                    className={cn("w-full my-2")}
-                    color={progressValue > 100 ? "primary" : "success"}
-                    value={progressValue}
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <Label className="w-full">
-                    {progressValue <= 100
-                      ? `${progressValue}% Used`
-                      : "100% Used"}
-                  </Label>
-                </TooltipContent>
-              </Tooltip>
+              {progressValue > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Progress
+                      className={cn("w-full my-2")}
+                      color={progressValue > 100 ? "primary" : "success"}
+                      value={progressValue}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <Label className="w-full">
+                      {progressValue <= 100
+                        ? `${progressValue}% Used`
+                        : "100% Used"}
+                    </Label>
+                  </TooltipContent>
+                </Tooltip>
+              )}
 
               <Card x-chunk="dashboard-02-chunk-0">
                 <CardHeader className="p-2 pt-0 md:p-4">
@@ -233,22 +228,24 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 </nav>
                 <div className="mt-auto">
                   <CreateFile />
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Progress
-                        className={cn("w-full my-2")}
-                        color={progressValue > 100 ? "primary" : "success"}
-                        value={progressValue}
-                      />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <Label className="w-full">
-                        {progressValue <= 100
-                          ? `${progressValue}% Used`
-                          : "100% Used"}
-                      </Label>
-                    </TooltipContent>
-                  </Tooltip>
+                  {progressValue > 0 && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Progress
+                          className={cn("w-full my-2")}
+                          color={progressValue > 100 ? "primary" : "success"}
+                          value={progressValue}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <Label className="w-full">
+                          {progressValue <= 100
+                            ? `${progressValue}% Used`
+                            : "100% Used"}
+                        </Label>
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
                   <Card>
                     <CardHeader>
                       <CardTitle>Upgrade to Pro</CardTitle>
@@ -272,40 +269,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
               </form>
             </div>
             <ModeToggle />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="rounded-full"
-                >
-                  <Avatar>
-                    {/* <AvatarImage
-                      src={user?.picture ?? "https://github.com/shadcn.png"}
-                    /> */}
-                    {user && user.family_name && user.given_name && (
-                      <AvatarFallback>
-                        {user.given_name[0].toUpperCase() +
-                          user.family_name[0].toUpperCase()}
-                      </AvatarFallback>
-                    )}
-                  </Avatar>
-                  <CircleUser className="h-5 w-5" />
-                  <span className="sr-only">Toggle user menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuSeparator />
-
-                <DropdownMenuItem>
-                  <LogoutLink>Logout</LogoutLink>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <AccountPopover user={user} />
           </header>
           <div className="flex flex-1 flex-col gap-2 p-4 lg:gap-4 lg:p-6">
             {children}

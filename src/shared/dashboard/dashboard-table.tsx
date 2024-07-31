@@ -35,6 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 
 const data: Payment[] = [
   {
@@ -106,19 +107,7 @@ export const columns: ColumnDef<Payment>[] = [
       <div className="capitalize">{row.getValue("fileName")}</div>
     ),
   },
-  {
-    accessorKey: "_creationTime",
-    id: "Creation At",
-    header: () => <div className="text-right">Last Modified At</div>,
-    cell: ({ row }) => {
-      const amount: number = row.getValue("Creation At");
 
-      // Format the amount as a dollar amount
-      const formatted = moment(amount).format("MMMM Do YYYY, hh:mm A");
-
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
-  },
   {
     accessorKey: "_creationTime",
     id: "Creation At",
@@ -167,13 +156,15 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(payment._id)}
             >
               Copy payment ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <Link href={`/workspace/${payment?._id}`}>
+              <DropdownMenuItem>Open</DropdownMenuItem>
+            </Link>
+            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -189,8 +180,6 @@ export default function DashboardTable({ filesList }: any) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-
-  console.log("filesList", filesList);
 
   const table = useReactTable({
     data: filesList,
