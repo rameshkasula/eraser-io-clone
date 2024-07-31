@@ -46,6 +46,7 @@ const WorkSpace = ({
   const getFileData = useCallback(async () => {
     if (params.field) {
       const result = await convex.query(api.file.getFileById, {
+        /* @ts-ignore */
         _id: params.field,
       });
 
@@ -72,6 +73,8 @@ const WorkSpace = ({
     try {
       if (content) {
         await updateDocument({
+          /* @ts-ignore */
+
           _id: params.field,
           document: JSON.stringify(content),
         });
@@ -79,6 +82,8 @@ const WorkSpace = ({
 
       if (whiteboard) {
         await updateWhiteboard({
+          /* @ts-ignore */
+
           _id: params.field,
           whiteboard: JSON.stringify(whiteboard),
         });
