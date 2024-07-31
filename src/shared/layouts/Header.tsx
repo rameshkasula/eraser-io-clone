@@ -46,10 +46,12 @@ const Header = () => {
             Login
           </Button>
         </LoginLink>
+        <Link href="/dashboard">
+          <Button variant="outline" className="px-2 border-primary ">
+            Try Eraser <ArrowRightIcon className="w-4 h-4 ml-2" />
+          </Button>
+        </Link>
 
-        <Button variant="outline" className="px-2 border-primary ">
-          Try Eraser <ArrowRightIcon className="w-4 h-4 ml-2" />
-        </Button>
         <ModeToggle />
       </div>
     </header>

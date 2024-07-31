@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 type Props = {};
@@ -30,9 +31,11 @@ const Banner = (props: Props) => {
         </p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <Button variant="default" className="px-12 py-3 border-primary ">
-            Try Eraser <ArrowRightIcon className="w-4 h-4 ml-2" />
-          </Button>
+          <Link href="/dashboard">
+            <Button variant="default" className="px-12 py-3 border-primary ">
+              Try Eraser <ArrowRightIcon className="w-4 h-4 ml-2" />
+            </Button>
+          </Link>
 
           <Button variant="outline" className="px-12 py-3 border-primary ">
             Learn More

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import TeamsForm from "@/shared/common/teams-form";
+import TeamsForm from "@/shared/teams/teams-form";
 import React from "react";
 
 type Props = {};
