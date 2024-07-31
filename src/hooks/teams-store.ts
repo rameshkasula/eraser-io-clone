@@ -29,7 +29,7 @@ const useTeams = create(
       isLoading: false,
       setIsLoading: (isLoading: boolean) => set({ isLoading }),
       teamsList: [],
-      setTeamsList: (teamsList: Team[]) => set({ teamsList }),
+      setTeamsList: (teamsList: any[]) => set({ teamsList }),
 
       selectedTeam: null,
       setSelectedTeam: (team: string | null) => set({ selectedTeam: team }),
