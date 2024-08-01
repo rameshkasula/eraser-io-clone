@@ -136,18 +136,23 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 <SelectContent>
                   <SelectGroup>
                     {teamsList?.length > 0 &&
-                      teamsList?.map((team: Team) => (
-                        <SelectItem key={team?.id} value={team?.id}>
-                          <div className="flex flex-1 justify-between items-center ">
-                            <Avatar className="mr-2 h-8 w-8 ">
-                              <AvatarFallback>
-                                {team?.name[0].toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            {team?.name}
-                          </div>
-                        </SelectItem>
-                      ))}
+                      teamsList?.map((team: Team) => {
+                        return (
+                          /* @ts-ignore */
+                          <SelectItem key={team?.id} value={team?.id}>
+                            <div className="flex flex-1 justify-between items-center ">
+                              <Avatar className="mr-2 h-8 w-8 ">
+                                <AvatarFallback>
+                                  {/* @ts-ignore */}
+                                  {team?.name[0].toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                              {/* @ts-ignore */}
+                              {team?.name}
+                            </div>
+                          </SelectItem>
+                        );
+                      })}
                   </SelectGroup>
                 </SelectContent>
               </Select>

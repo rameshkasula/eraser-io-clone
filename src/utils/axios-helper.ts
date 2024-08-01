@@ -12,6 +12,7 @@ axiosClient.interceptors.request.use(
 
     // @ts-ignore
     if (session && session?.user?.token) {
+      // @ts-ignore
       config.headers.Authorization = `Bearer ${session?.user?.token}`;
     }
     return config;
