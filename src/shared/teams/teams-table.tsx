@@ -125,7 +125,10 @@ export const columns: ColumnDef<Payment>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("createdBy")?.name}</div>
+      <div className="lowercase">
+        {/* @ts-ignore*/}
+        {row.getValue("createdBy")?.name}
+      </div>
     ),
   },
   {

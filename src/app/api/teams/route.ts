@@ -29,7 +29,6 @@ export async function GET(request: NextRequest, response: NextResponse) {
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const body = await request.json();
-    console.log(body);
 
     const team = await prisma.team.create({
       data: {
@@ -44,7 +43,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   } catch (error) {
     return NextResponse.json(
       {
-        error,
+        error, // @ts-ignore
         message: error?.message || "An error occurred.",
         tip: "Internal Server Error",
       },

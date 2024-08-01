@@ -104,6 +104,8 @@ const TeamsForm = (props: Props) => {
       router.push(`/teams`);
     } catch (error) {
       console.log("error", error);
+
+      // @ts-ignore
       toast.error(error?.message || "Error creating team");
     }
   };

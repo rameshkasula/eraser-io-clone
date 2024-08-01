@@ -70,27 +70,6 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     setFilesList,
     createOpen,
   }: any = useTeams();
-  const convex = useConvex();
-
-  // React.useEffect(() => {
-  //   async function getTeamsList() {
-  //     setIsLoading(true);
-  //     const result = await convex.query(api.team.getAllTeams);
-
-  //     const filesResult = await convex.query(api.file.getFiles, {
-  //       teamId: selectedTeam ?? "",
-  //     });
-
-  //     // console.log("filesResult", filesResult);
-
-  //     setTeamsList([...result]);
-
-  //     setFilesList([...filesResult]);
-  //     setIsLoading(false);
-  //   }
-
-  //   getTeamsList();
-  // }, [session, pathname, selectedTeam, createOpen]);
 
   React.useEffect(() => {
     async function getTeamsList() {
@@ -98,6 +77,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
       try {
         const result = await axiosClient.get("/teams", {
           params: {
+            // @ts-ignore
+
             organizationId: session?.user?.organizationId ?? session?.user?.id,
           },
         });

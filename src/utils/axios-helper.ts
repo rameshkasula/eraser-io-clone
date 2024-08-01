@@ -10,7 +10,7 @@ axiosClient.interceptors.request.use(
   async (config) => {
     const session = await getSession();
 
-    console.log("aaaaaaaaaaaaaaa", session);
+    // @ts-ignore
     if (session && session?.user?.token) {
       config.headers.Authorization = `Bearer ${session?.user?.token}`;
     }
