@@ -20,7 +20,7 @@ type Props = {
 const AccountPopover = (props: Props) => {
   const { user } = props;
 
-  console.log("user", user);
+  // console.log("user", user);
   return (
     <div>
       <DropdownMenu>

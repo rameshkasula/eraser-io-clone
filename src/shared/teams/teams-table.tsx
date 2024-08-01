@@ -107,11 +107,9 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "teamName",
+    accessorKey: "name",
     header: "Team Name",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("teamName")}</div>
-    ),
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "createdBy",
@@ -127,15 +125,15 @@ export const columns: ColumnDef<Payment>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("createdBy")}</div>
+      <div className="lowercase">{row.getValue("createdBy")?.name}</div>
     ),
   },
   {
-    accessorKey: "_creationTime",
+    accessorKey: "createdAt",
     id: "Creation At",
     header: () => <div className="text-right">Creation At</div>,
     cell: ({ row }) => {
-      const amount: number = row.getValue("Creation At");
+      const amount: number = row.getValue("createdAt");
 
       // Format the amount as a dollar amount
       const formatted = moment(amount).format("MMMM Do YYYY, hh:mm A");
@@ -190,6 +188,7 @@ export default function TeamsTable({
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  console.log("teamsList", teamsList);
   const table = useReactTable({
     data: teamsList,
     columns,

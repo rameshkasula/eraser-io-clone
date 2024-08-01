@@ -42,6 +42,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useSession } from "next-auth/react";
+import { axiosClient } from "@/utils/axios-helper";
 
 const AccountPopover = dynamic(() => import("@/shared/common/user-profile"), {
   ssr: false,
@@ -56,7 +57,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
 
   const { data: session } = useSession(); // get the client session
 
-  console.log("session", session);
+  // console.log("session", session);
 
   const {
     teamsList,
@@ -71,25 +72,53 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   }: any = useTeams();
   const convex = useConvex();
 
+  // React.useEffect(() => {
+  //   async function getTeamsList() {
+  //     setIsLoading(true);
+  //     const result = await convex.query(api.team.getAllTeams);
+
+  //     const filesResult = await convex.query(api.file.getFiles, {
+  //       teamId: selectedTeam ?? "",
+  //     });
+
+  //     // console.log("filesResult", filesResult);
+
+  //     setTeamsList([...result]);
+
+  //     setFilesList([...filesResult]);
+  //     setIsLoading(false);
+  //   }
+
+  //   getTeamsList();
+  // }, [session, pathname, selectedTeam, createOpen]);
+
   React.useEffect(() => {
     async function getTeamsList() {
       setIsLoading(true);
-      const result = await convex.query(api.team.getAllTeams);
+      try {
+        const result = await axiosClient.get("/teams", {
+          params: {
+            organizationId: session?.user?.organizationId ?? session?.user?.id,
+          },
+        });
 
-      const filesResult = await convex.query(api.file.getFiles, {
-        teamId: selectedTeam ?? "",
-      });
+        console.log("result", result.data);
 
-      // console.log("filesResult", filesResult);
-
-      setTeamsList([...result]);
-
-      setFilesList([...filesResult]);
-      setIsLoading(false);
+        if (result.status == 200 && result?.data?.teams?.length > 0) {
+          setSelectedTeam(result.data.teams[0].id);
+          setTeamsList([...result.data.teams]);
+        }
+      } catch (error) {
+        console.log("teams error", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
-    getTeamsList();
-  }, [session, pathname, selectedTeam, createOpen]);
+    if (session) {
+      getTeamsList();
+    }
+  }, [session]);
 
   const progressValue = (filesList.length / 5) * 100;
 
@@ -127,15 +156,14 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   <SelectGroup>
                     {teamsList?.length > 0 &&
                       teamsList?.map((team: Team) => (
-                        <SelectItem key={team._id} value={team._id}>
+                        <SelectItem key={team?.id} value={team?.id}>
                           <div className="flex flex-1 justify-between items-center ">
                             <Avatar className="mr-2 h-8 w-8 ">
                               <AvatarFallback>
-                                {team.teamName[0].toUpperCase() +
-                                  team.teamName[1].toUpperCase()}
+                                {team?.name[0].toUpperCase()}
                               </AvatarFallback>
                             </Avatar>
-                            {team.teamName}
+                            {team?.name}
                           </div>
                         </SelectItem>
                       ))}
