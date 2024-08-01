@@ -10,7 +10,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CircleUser } from "lucide-react";
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 type Props = {
   user: any;
@@ -18,6 +19,8 @@ type Props = {
 
 const AccountPopover = (props: Props) => {
   const { user } = props;
+
+  console.log("user", user);
   return (
     <div>
       <DropdownMenu>
@@ -27,11 +30,8 @@ const AccountPopover = (props: Props) => {
               {/* <AvatarImage
                       src={user?.picture ?? "https://github.com/shadcn.png"}
                     /> */}
-              {user && user.family_name && user.given_name && (
-                <AvatarFallback>
-                  {user.given_name[0].toUpperCase() +
-                    user.family_name[0].toUpperCase()}
-                </AvatarFallback>
+              {user?.name && (
+                <AvatarFallback>{user?.name[0].toUpperCase()}</AvatarFallback>
               )}
             </Avatar>
             <CircleUser className="h-5 w-5" />
@@ -41,12 +41,16 @@ const AccountPopover = (props: Props) => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <Link href="/settings">
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+          </Link>
           <DropdownMenuItem>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem>
-            <LogoutLink>Logout</LogoutLink>
+          <DropdownMenuItem
+            onClick={() => signOut({ callbackUrl: "/", redirect: true })}
+          >
+            Logout
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

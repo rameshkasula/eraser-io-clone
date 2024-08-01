@@ -1,6 +1,5 @@
 "use client";
 
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useConvex } from "convex/react";
 import dynamic from "next/dynamic";
 import * as React from "react";

@@ -18,7 +18,6 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -27,7 +26,16 @@ type Props = {};
 const TeamsForm = (props: Props) => {
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
-  const { user } = useKindeBrowserClient();
+  const user = {
+    email: "sQqXU@example.com",
+    given_name: "John",
+    family_name: "Doe",
+    picture:
+      "https://lh3.googleusercontent.com/a/AGNmyxYjy7j6eWtZD3O2R8u9k7kZJtqS2Kq6uZ6Uv5gqYQ=s96-c",
+    sub: "123",
+    name: "John Doe",
+    _id: "123",
+  };
   const formSchema = z.object({
     name: z.string().min(1, { message: "Team name is required" }).min(5, {
       message: "Team name should be at least 5 characters",

@@ -1,19 +1,36 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-// This function can be marked `async` if using `await` inside
-export default async function middleware(request: NextRequest) {
-  const { isAuthenticated } = getKindeServerSession();
-  console.log("Middleware executed");
+import { User } from "next-auth";
+import { headers } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 
-  if (!(await isAuthenticated())) {
+export const middleware = async (
+  request: NextRequest,
+  response: NextResponse
+) => {
+  const session: session = await fetch(
+    `${process.env.NEXTAUTH_URL}/api/auth/session`,
+    {
+      headers: headers(),
+      // cache: "no-store"
+    }
+  ).then(async (res) => await res.json());
+
+  const loggedIn = session && Object.keys(session).length > 0 ? true : false;
+  const pathname = request.nextUrl.pathname;
+
+  let publicRoutes = ["/", "/auth/sign-in", "/auth/sign-up"];
+
+  if (!publicRoutes.includes(pathname) && !loggedIn) {
+    // console.log("redirecting");
     return NextResponse.redirect(
-      new URL("/api/auth/login?post_login_redirect_url=/dashboard", request.url)
+      new URL("/auth/sign-in", process.env.NEXTAUTH_URL)
     );
   }
-}
 
-// See "Matching Paths" below to learn more
-export const config = {
-  matcher: ["/dashboard"],
+  return NextResponse.next();
 };
+
+export const config = {
+  matcher: ["/dashboard", "/teams/:p", "/subscription"],
+};
+
+type session = {} | User;

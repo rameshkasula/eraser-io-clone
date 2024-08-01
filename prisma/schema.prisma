@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  email          String   @unique
+  password       String
+  name           String
+  role           UserRole @default(PERSONAL)
+  organizationId String? // Nullable for personal users
+  //  organization      Organization? @relation(fields: [organizationId], references: [id])
+  files          File[]   @relation("UserFiles")
+  // teams             Team[]       @relation("UserTeams") // Only business users can have teams
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+enum UserRole {
+  PERSONAL
+  BUSINESS
+  ADMIN
+}
+
+model File {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  userId    String   @db.ObjectId
+  user      User     @relation("UserFiles", fields: [userId], references: [id])
+  teamId    String?  @db.ObjectId // Nullable for files not associated with a team
+  // team              Team?        @relation(fields: [teamId], references: [id]) // Optional relationship
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model Team {
+//   id                String       @id @default(auto()) @map("_id") @db.ObjectId
+//   name              String
+//   businessUserId    String       @db.ObjectId
+//   businessUser      User         @relation(fields: [businessUserId], references: [id])
+//   organizationId    String       @db.ObjectId // Link to organization
+//   organization      Organization  @relation(fields: [organizationId], references: [id])
+//   members           User[]       @relation("TeamMembers") // Users in the team
+//   files             File[]       @relation("TeamFiles") // Files created by the team
+//   createdAt         DateTime     @default(now())
+//   updatedAt         DateTime     @updatedAt
+// }
+
+// model Organization {
+//   id                String       @id @default(auto()) @map("_id") @db.ObjectId
+//   name              String
+//   users             User[]       @relation("OrganizationUsers")
+//   teams             Team[]       @relation("OrganizationTeams")
+//   fileCount         Int          @default(0) // Track the number of files created
+//   createdAt         DateTime     @default(now())
+//   updatedAt         DateTime     @updatedAt
+// }
+
+// Business logic comments:
+// - If user role is not BUSINESS, they cannot have teams.
+// - Organizations can create only 5 files for free. To create more, they need to upgrade their plan.
+// - If user role is BUSINESS, they can have teams and organizations.
+// - Each team can have multiple users and multiple files.
+
+// Fetching organization details should include:
+// - Teams in the organization
+// - Users in each team
+// - Files in each team
+// - Files created by a specific user

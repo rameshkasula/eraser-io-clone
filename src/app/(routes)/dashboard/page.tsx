@@ -1,8 +1,6 @@
 "use client";
 
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import * as React from "react";
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
 import { Button } from "@/components/ui/button";
 import { useConvex, useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -13,8 +11,15 @@ type Props = {};
 
 const DashboardPage = (props: Props) => {
   const { filesList, isLoading }: any = useTeams();
-  const { user } = useKindeBrowserClient();
+
   const convex = useConvex();
+
+  let user = {
+    email: "",
+    given_name: "",
+    family_name: "",
+    picture: "",
+  };
 
   const createUser = useMutation(api.user.createUser);
 

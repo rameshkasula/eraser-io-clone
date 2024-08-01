@@ -4,7 +4,6 @@ import { ModeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import AccountPopover from "@/shared/common/user-profile";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { ArrowLeftIcon, SaveAllIcon, Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import * as React from "react";
@@ -37,7 +36,13 @@ const WorkSpace = ({
   params: { field: string };
   searchParams: any;
 }) => {
-  const { user } = useKindeBrowserClient();
+  const user = {
+    email: searchParams?.get("email"),
+    given_name: searchParams?.get("given_name"),
+    family_name: searchParams?.get("family_name"),
+    picture: searchParams?.get("picture"),
+    id: searchParams?.get("id"),
+  };
   const [content, setContent] = React.useState(null);
   const [whiteboard, setWhiteboard] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);

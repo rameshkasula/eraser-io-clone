@@ -27,10 +27,7 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/theme-toggle";
 import { Progress } from "@/components/ui/progress";
-import {
-  LogoutLink,
-  useKindeBrowserClient,
-} from "@kinde-oss/kinde-auth-nextjs";
+import dynamic from "next/dynamic";
 import * as React from "react";
 import useTeams, { Team, TeamsState } from "@/hooks/teams-store";
 import { useConvex } from "convex/react";
@@ -44,11 +41,22 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import AccountPopover from "@/shared/common/user-profile";
-import AppLoader from "@/shared/common/app-loader";
+import { useSession } from "next-auth/react";
+
+const AccountPopover = dynamic(() => import("@/shared/common/user-profile"), {
+  ssr: false,
+});
+
+const AppLoader = dynamic(() => import("@/shared/common/app-loader"), {
+  ssr: false,
+});
 
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+
+  const { data: session } = useSession(); // get the client session
+
+  console.log("session", session);
 
   const {
     teamsList,
@@ -62,7 +70,6 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     createOpen,
   }: any = useTeams();
   const convex = useConvex();
-  const { user } = useKindeBrowserClient();
 
   React.useEffect(() => {
     async function getTeamsList() {
@@ -82,7 +89,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     }
 
     getTeamsList();
-  }, [user, pathname, selectedTeam, createOpen]);
+  }, [session, pathname, selectedTeam, createOpen]);
 
   const progressValue = (filesList.length / 5) * 100;
 
@@ -270,7 +277,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
               <form>{/* <AppCommand /> */}</form>
             </div>
             <ModeToggle />
-            <AccountPopover user={user} />
+            <AccountPopover user={session?.user} />
           </header>
           <div className="flex flex-1 flex-col gap-2 p-4 lg:gap-4 lg:p-6">
             {children}
