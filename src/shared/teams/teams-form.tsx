@@ -15,8 +15,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -62,26 +60,9 @@ const TeamsForm = (props: Props) => {
     },
   });
 
-  const createTeam = useMutation(api.team.createTeam);
-
   const handleTeam = async (data: z.infer<typeof formSchema>) => {
     console.log("team data", data);
     setLoading(true);
-
-    // createTeam({
-    //   teamName: data.name ?? "",
-    //   createdBy: user?.email ?? "",
-    // })
-    //   .then((res) => {
-    //     console.log("res", res);
-    //     toast.success("Team has been created.");
-    //     router.push(`/teams`);
-    //   })
-    //   .catch((err) => {
-    //     console.log("err", err);
-    //     toast.error(err?.message);
-    //   })
-    //   .finally(() => setLoading(false));
 
     let payload = {
       name: data.name,

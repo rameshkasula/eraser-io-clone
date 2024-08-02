@@ -10,9 +10,6 @@ import * as React from "react";
 import { useCallback } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { useConvex, useMutation } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
-import { useRouter } from "next/navigation";
 import AppLoader from "@/shared/common/app-loader";
 
 const WorkspaceDocument = dynamic(
@@ -46,69 +43,69 @@ const WorkSpace = ({
   const [content, setContent] = React.useState(null);
   const [whiteboard, setWhiteboard] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
-  const convex = useConvex();
+  // const convex = useConvex();
 
-  const getFileData = useCallback(async () => {
-    if (params.field) {
-      const result = await convex.query(api.file.getFileById, {
-        /* @ts-ignore */
-        _id: params.field,
-      });
+  // const getFileData = useCallback(async () => {
+  //   if (params.field) {
+  //     const result = await convex.query(api.file.getFileById, {
+  //       /* @ts-ignore */
+  //       _id: params.field,
+  //     });
 
-      setTimeout(() => {
-        if (result?.document) {
-          setContent(JSON.parse(result.document));
-        }
-        if (result?.whiteboard) {
-          setWhiteboard(JSON.parse(result.whiteboard));
-        }
-        setIsLoading(false);
-      }, 600);
-    }
-  }, [convex, params.field]);
+  //     setTimeout(() => {
+  //       if (result?.document) {
+  //         setContent(JSON.parse(result.document));
+  //       }
+  //       if (result?.whiteboard) {
+  //         setWhiteboard(JSON.parse(result.whiteboard));
+  //       }
+  //       setIsLoading(false);
+  //     }, 600);
+  //   }
+  // }, [convex, params.field]);
 
-  const updateDocument = useMutation(api.file.updateFileDoc);
-  const updateWhiteboard = useMutation(api.file.updateFileWhiteboard);
+  // const updateDocument = useMutation(api.file.updateFileDoc);
+  // const updateWhiteboard = useMutation(api.file.updateFileWhiteboard);
 
   const handleSave = useCallback(async () => {
     if (!params.field) {
       return;
     }
 
-    try {
-      if (content) {
-        await updateDocument({
-          /* @ts-ignore */
+    // try {
+    //   if (content) {
+    //     await updateDocument({
+    //       /* @ts-ignore */
 
-          _id: params.field,
-          document: JSON.stringify(content),
-        });
-      }
+    //       _id: params.field,
+    //       document: JSON.stringify(content),
+    //     });
+    //   }
 
-      if (whiteboard) {
-        await updateWhiteboard({
-          /* @ts-ignore */
+    //   if (whiteboard) {
+    //     await updateWhiteboard({
+    //       /* @ts-ignore */
 
-          _id: params.field,
-          whiteboard: JSON.stringify(whiteboard),
-        });
-      }
+    //       _id: params.field,
+    //       whiteboard: JSON.stringify(whiteboard),
+    //     });
+    //   }
 
-      toast.success("File saved");
-    } catch (error) {
-      console.error("Error saving file:", error);
-      toast.error("Failed to save file");
-    }
-  }, [content, params.field, updateDocument, updateWhiteboard, whiteboard]);
+    //   toast.success("File saved");
+    // } catch (error) {
+    //   console.error("Error saving file:", error);
+    //   toast.error("Failed to save file");
+    // }
+  }, [content, params.field, whiteboard]);
 
   React.useEffect(() => {
     if (params.field) {
       setIsLoading(true);
-      getFileData();
+      //   getFileData();
     }
 
     return () => {};
-  }, [getFileData, params.field]);
+  }, [params.field]);
 
   const holderName = "editor_create";
 

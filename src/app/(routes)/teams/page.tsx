@@ -1,9 +1,7 @@
 "use client";
 
-import { useConvex } from "convex/react";
 import dynamic from "next/dynamic";
 import * as React from "react";
-import { api } from "../../../../convex/_generated/api";
 import useTeams, { TeamsState } from "@/hooks/teams-store";
 
 const TeamsTable = dynamic(() => import("@/shared/teams/teams-table"), {
