@@ -14,8 +14,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  session,
 }: Readonly<{
   children: React.ReactNode;
+  session: any;
 }>) {
   return (
     <html lang="en">
@@ -26,7 +28,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ConvexClientProvider>{children}</ConvexClientProvider>
+          <ConvexClientProvider session={session}>
+            {children}
+          </ConvexClientProvider>
         </ThemeProvider>
       </body>
     </html>

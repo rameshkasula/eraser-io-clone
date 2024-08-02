@@ -71,10 +71,6 @@ const authOptions = {
       session.user = token;
       return session;
     },
-
-    async redirect({ url, baseUrl }: any) {
-      return baseUrl;
-    },
   },
 };
 

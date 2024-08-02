@@ -1,10 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Button } from "@/components/ui/button";
 import { useConvex, useMutation, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
-import DataTable from "@/shared/common/data-table";
 import DashboardTable from "@/shared/dashboard/dashboard-table";
 import useTeams from "@/hooks/teams-store";
 type Props = {};
