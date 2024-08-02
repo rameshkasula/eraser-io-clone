@@ -7,15 +7,9 @@ import { ReactNode } from "react";
 
 import NextTopLoader from "nextjs-toploader";
 
-export function AppSessionProvider({
-  children,
-  session,
-}: {
-  children: ReactNode;
-  session: any;
-}) {
+export function AppSessionProvider({ children }: { children: ReactNode }) {
   return (
-    <SessionProvider session={session}>
+    <SessionProvider>
       <TooltipProvider>
         <NextTopLoader />
         {children}

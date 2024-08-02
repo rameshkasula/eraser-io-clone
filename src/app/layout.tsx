@@ -14,10 +14,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  session,
 }: Readonly<{
   children: React.ReactNode;
-  session: any;
 }>) {
   return (
     <html lang="en">
@@ -28,7 +26,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AppSessionProvider session={session}>{children}</AppSessionProvider>
+          <AppSessionProvider>{children}</AppSessionProvider>
         </ThemeProvider>
       </body>
     </html>
