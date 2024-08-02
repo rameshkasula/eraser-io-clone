@@ -10,7 +10,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CircleUser } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 type Props = {
@@ -31,7 +31,7 @@ const AccountPopover = (props: Props) => {
                       src={user?.picture ?? "https://github.com/shadcn.png"}
                     /> */}
               {user?.name && (
-                <AvatarFallback>{user?.name[0].toUpperCase()}</AvatarFallback>
+                <AvatarFallback>{user?.name[0]?.toUpperCase()}</AvatarFallback>
               )}
             </Avatar>
             <CircleUser className="h-5 w-5" />
