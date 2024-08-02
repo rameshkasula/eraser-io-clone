@@ -6,6 +6,8 @@ export const middleware = async (
   request: NextRequest,
   response: NextResponse
 ) => {
+  const pathname = request.nextUrl.pathname;
+
   const session: session = await fetch(
     `${process.env.NEXTAUTH_URL}/api/auth/session`,
     {
@@ -15,7 +17,6 @@ export const middleware = async (
   ).then(async (res) => await res.json());
 
   const loggedIn = session && Object.keys(session).length > 0 ? true : false;
-  const pathname = request.nextUrl.pathname;
 
   let publicRoutes = ["/", "/auth/sign-in", "/auth/sign-up"];
 

@@ -133,7 +133,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: "createdAt",
-    id: "Creation At",
+
     header: () => <div className="text-right">Creation At</div>,
     cell: ({ row }) => {
       const amount: number = row.getValue("createdAt");
@@ -191,7 +191,7 @@ export default function TeamsTable({
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  console.log("teamsList", teamsList);
+  // console.log("teamsList", teamsList);
   const table = useReactTable({
     data: teamsList,
     columns,
@@ -211,15 +211,18 @@ export default function TeamsTable({
     },
   });
 
+  const [filterValue, setFilterValue] = React.useState("");
+
   return (
     <div className="w-full">
       <div className="flex items-center justify-between py-4">
         <Input
-          placeholder="Filter teams..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
+          placeholder="Filter teams name..."
+          value={filterValue}
+          onChange={(event) => {
+            setFilterValue(event.target.value);
+            table.getColumn("name")?.setFilterValue(event.target.value);
+          }}
           className="max-w-sm"
         />
         <div className="flex items-center space-x-3">

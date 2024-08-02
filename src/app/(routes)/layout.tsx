@@ -83,7 +83,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
           },
         });
 
-        console.log("result", result.data);
+        //    console.log("result", result.data);
 
         if (result.status == 200 && result?.data?.teams?.length > 0) {
           setSelectedTeam(result.data.teams[0].id);
@@ -99,7 +99,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     if (session) {
       getTeamsList();
     }
-  }, [session]);
+  }, [session, pathname]);
 
   const progressValue = (filesList.length / 5) * 100;
 
