@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { cn } from "@/lib/utils";
 import { AppSessionProvider } from "@/providers/session-provider";
+import { Session } from "next-auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +18,7 @@ export default function RootLayout({
   session,
 }: {
   children: React.ReactNode;
-  session: any;
+  session: Session | null;
 }) {
   return (
     <html lang="en">
