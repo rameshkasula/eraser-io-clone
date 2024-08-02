@@ -1,4 +1,4 @@
-import { axiosClient } from "@/utils/axiosClient";
+import { axiosClient } from "@/utils/axios-helper";
 import create from "zustand";
 
 interface Category {
@@ -37,6 +37,7 @@ export const useCategoryStore = create<CategoryState>((set) => ({
     } catch (error) {
       set({
         isError: true,
+        // @ts-ignore
         errorMessage: error?.message || "Error fetching categories",
       });
     } finally {
@@ -56,6 +57,7 @@ export const useCategoryStore = create<CategoryState>((set) => ({
     } catch (error) {
       set({
         isError: true,
+        // @ts-ignore
         errorMessage: error.message || "Error creating category",
       });
     } finally {
@@ -72,6 +74,7 @@ export const useCategoryStore = create<CategoryState>((set) => ({
     } catch (error) {
       set({
         isError: true,
+        // @ts-ignore
         errorMessage: error.message || "Error fetching category",
       });
     } finally {
@@ -97,6 +100,7 @@ export const useCategoryStore = create<CategoryState>((set) => ({
     } catch (error) {
       set({
         isError: true,
+        // @ts-ignore
         errorMessage: error.message || "Error updating category",
       });
     } finally {
@@ -115,6 +119,7 @@ export const useCategoryStore = create<CategoryState>((set) => ({
     } catch (error) {
       set({
         isError: true,
+        // @ts-ignore
         errorMessage: error.message || "Error deleting category",
       });
     } finally {
