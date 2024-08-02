@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata } from "next"; // Remove if not used
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
@@ -9,7 +9,7 @@ import { Session } from "next-auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Eraser.io",
+  title: "Kasz.io",
   description: "AI powered markdown editor",
 };
 
@@ -17,8 +17,10 @@ export default function RootLayout({
   children,
   session,
 }: {
+  // @ts-ignore
   children: React.ReactNode;
-  session: Session | null;
+  // @ts-ignore
+  session: Session;
 }) {
   return (
     <html lang="en">
