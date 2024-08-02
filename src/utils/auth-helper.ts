@@ -8,7 +8,8 @@ import { ENV_VARIABLES } from "@/utils/constants";
 
 const AUTH_SECRET = ENV_VARIABLES.authSecret || "secret";
 const authUrl = ENV_VARIABLES.authURL || "http://localhost:8082";
-const authOptions = {
+
+const nextAuthOptions = {
   pages: {
     signIn: authUrl + "/auth/sign-in",
     signOut: authUrl + "/auth/sign-in",
@@ -74,4 +75,4 @@ const authOptions = {
   },
 };
 
-export default authOptions; // export default authOptions;
+export default nextAuthOptions; // export default authOptions;

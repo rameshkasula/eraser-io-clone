@@ -17,9 +17,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useConvex, useMutation } from "convex/react";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
-import { api } from "../../../convex/_generated/api";
 import useTeams from "@/hooks/teams-store";
 import { toast } from "sonner";
 
@@ -28,37 +25,11 @@ export default function CreateFile() {
   const [fileName, setFileName] = React.useState("");
   const { selectedTeam, createOpen, setCreateOpen }: any = useTeams();
 
-  const convex = useConvex();
-  const { user } = useKindeBrowserClient();
-
-  const createFile = useMutation(api.file.createFile);
-
   const handleCreateFile = () => {
     if (fileName === "") {
       setShowAlert(true);
     } else {
-      createFile({
-        fileName: fileName ?? "",
-        teamId: selectedTeam ?? "",
-        createdBy: user?.email ?? "",
-        creator: {
-          firstName: user?.given_name ?? "",
-          lastName: user?.family_name ?? "",
-          email: user?.email ?? "",
-          image: user?.picture ?? "",
-          id: user?.id ?? "",
-        },
-      })
-        .then((res) => {
-          console.log("res", res);
-          setCreateOpen(false);
-          setShowAlert(false);
-          setFileName("");
-          toast.success("File has been created");
-        })
-        .catch((err) => {
-          toast.error(err?.message);
-        });
+      console.log("create file", fileName);
     }
   };
   return (

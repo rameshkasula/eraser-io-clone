@@ -13,8 +13,8 @@ export const sidebarItems = [
     icon: ChartPie,
   },
   {
-    name: "Dashboard",
-    href: "/dashboard",
+    name: "Workspace",
+    href: "/workspace",
     icon: LayoutGrid,
   },
   {

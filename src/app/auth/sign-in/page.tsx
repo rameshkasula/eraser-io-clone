@@ -4,6 +4,12 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { Loader2 } from "lucide-react";
+
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -21,13 +27,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
-import { Loader2 } from "lucide-react";
-
-import { toast } from "sonner";
-import { axiosClient } from "@/utils/axios-helper";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -51,8 +50,6 @@ const Page = () => {
     setIsLoading(true);
 
     try {
-      // const response = await axiosClient.post("/auth/login", data);
-
       // console.log(response.data);
       const res = await signIn("credentials", {
         redirect: false,
@@ -64,7 +61,7 @@ const Page = () => {
       if (res?.ok) {
         toast.success("Login Successful");
 
-        router.push("/dashboard");
+        router.push("/workspace");
       } else {
         toast.error("Login Failed: " + res?.error);
       }
@@ -86,6 +83,7 @@ const Page = () => {
         <CardContent>
           <Form {...form}>
             <form
+              noValidate
               onSubmit={form.handleSubmit(handleSubmit)}
               className="max-w-md w-full flex flex-col gap-4 "
             >

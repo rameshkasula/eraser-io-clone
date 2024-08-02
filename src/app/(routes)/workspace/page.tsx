@@ -5,7 +5,7 @@ import DashboardTable from "@/shared/dashboard/dashboard-table";
 import useTeams from "@/hooks/teams-store";
 type Props = {};
 
-const DashboardPage = (props: Props) => {
+const WorkSpace = (props: Props) => {
   const { filesList, isLoading }: any = useTeams();
 
   return (
@@ -19,4 +19,4 @@ const DashboardPage = (props: Props) => {
   );
 };
 
-export default DashboardPage;
+export default WorkSpace;

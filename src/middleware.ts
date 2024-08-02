@@ -12,7 +12,7 @@ export const middleware = async (
     `${process.env.NEXTAUTH_URL}/api/auth/session`,
     {
       headers: headers(),
-      cache: "no-store",
+      // cache: "no-store",
     }
   ).then(async (res) => await res.json());
 

@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bell, CircleUser, Menu, Package2 } from "lucide-react";
-
+import { Bell, Menu, Package2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +16,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -30,8 +28,6 @@ import { Progress } from "@/components/ui/progress";
 import dynamic from "next/dynamic";
 import * as React from "react";
 import useTeams, { Team, TeamsState } from "@/hooks/teams-store";
-import { useConvex } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppCommand from "@/shared/common/app-command";
 import CreateFile from "@/shared/dashboard/create-file";
@@ -57,7 +53,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
 
   const { data: session } = useSession(); // get the client session
 
-  // console.log("session", session);
+  console.log("session", session);
 
   const {
     teamsList,
