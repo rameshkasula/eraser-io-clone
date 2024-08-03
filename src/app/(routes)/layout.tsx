@@ -39,6 +39,9 @@ import {
 } from "@/components/ui/tooltip";
 import { useSession } from "next-auth/react";
 import { axiosClient } from "@/utils/axios-helper";
+import { useFileStore } from "@/hooks/files-store";
+import { ENV_VARIABLES } from "@/utils/constants";
+import { ThemeColorToggle } from "@/components/color-toggle";
 
 const AccountPopover = dynamic(() => import("@/shared/common/user-profile"), {
   ssr: false,
@@ -52,13 +55,15 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const { data: session } = useSession(); // get the client session
+
   // @ts-ignore
-  const sidebarItems = roleBasedItems(session?.user?.role ?? "ADMIN");
+  const userRole = session?.user?.role ?? "PERSONAL";
+
+  const sidebarItems = roleBasedItems(userRole);
 
   const {
     teamsList,
     setTeamsList,
-    isLoading,
     setIsLoading,
     selectedTeam,
     setSelectedTeam,
@@ -66,6 +71,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     setFilesList,
     createOpen,
   }: any = useTeams();
+
+  const { files, isLoading } = useFileStore();
 
   React.useEffect(() => {
     async function getTeamsList() {
@@ -92,12 +99,13 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
       }
     }
 
-    if (session) {
+    // @ts-ignore
+    if (session && userRole === "BUSINESS") {
       getTeamsList();
     }
   }, [session, pathname]);
 
-  const progressValue = (filesList.length / 5) * 100;
+  const progressValue = (files?.length / 5) * 100;
 
   return (
     <React.Suspense
@@ -112,7 +120,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 className="flex items-center gap-2 font-semibold"
               >
                 <Package2 className="h-6 w-6" />
-                <span className="">Eraser.io</span>
+                <span className="">{ENV_VARIABLES.appName}</span>
               </Link>
               <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
                 <Bell className="h-4 w-4" />
@@ -120,38 +128,40 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
               </Button>
             </div>
             <div className="flex-1">
-              <Select
-                value={selectedTeam}
-                onValueChange={(e) => {
-                  setSelectedTeam(e);
-                }}
-              >
-                <SelectTrigger className="w-[90%] mx-2 my-2">
-                  <SelectValue placeholder="Select a team" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {teamsList?.length > 0 &&
-                      teamsList?.map((team: Team) => {
-                        return (
-                          /* @ts-ignore */
-                          <SelectItem key={team?.id} value={team?.id}>
-                            <div className="flex flex-1 justify-between items-center ">
-                              <Avatar className="mr-2 h-8 w-8 ">
-                                <AvatarFallback>
-                                  {/* @ts-ignore */}
-                                  {team?.name[0].toUpperCase()}
-                                </AvatarFallback>
-                              </Avatar>
-                              {/* @ts-ignore */}
-                              {team?.name}
-                            </div>
-                          </SelectItem>
-                        );
-                      })}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              {session && userRole == "BUSINESS" && (
+                <Select
+                  value={selectedTeam}
+                  onValueChange={(e) => {
+                    setSelectedTeam(e);
+                  }}
+                >
+                  <SelectTrigger className="w-[90%] mx-2 my-2">
+                    <SelectValue placeholder="Select a team" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {teamsList?.length > 0 &&
+                        teamsList?.map((team: Team) => {
+                          return (
+                            /* @ts-ignore */
+                            <SelectItem key={team?.id} value={team?.id}>
+                              <div className="flex flex-1 justify-between items-center ">
+                                <Avatar className="mr-2 h-8 w-8 ">
+                                  <AvatarFallback>
+                                    {/* @ts-ignore */}
+                                    {team?.name[0].toUpperCase()}
+                                  </AvatarFallback>
+                                </Avatar>
+                                {/* @ts-ignore */}
+                                {team?.name}
+                              </div>
+                            </SelectItem>
+                          );
+                        })}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
               <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                 {sidebarItems.map((item) => (
                   <Link
@@ -196,7 +206,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 </Tooltip>
               )}
 
-              <Card x-chunk="dashboard-02-chunk-0">
+              <Card className="w-full my-2" x-chunk="dashboard-02-chunk-0">
                 <CardHeader className="p-2 pt-0 md:p-4">
                   <CardTitle>Upgrade to Pro</CardTitle>
                   <CardDescription>
@@ -286,6 +296,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             <div className="w-full flex-1">
               <form>{/* <AppCommand /> */}</form>
             </div>
+            <ThemeColorToggle />
             <ModeToggle />
             <AccountPopover user={session?.user} />
           </header>

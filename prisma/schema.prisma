@@ -32,8 +32,8 @@ model User {
 model File {
   id             String        @id @default(auto()) @map("_id") @db.ObjectId
   name           String
-  content        Json
-  whiteboard     Json
+  content        Json?
+  whiteboard     Json?
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   user           User          @relation("UserToFile", fields: [userId], references: [id])

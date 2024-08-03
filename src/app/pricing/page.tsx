@@ -4,7 +4,7 @@ type Props = {};
 
 const PricingPage = (props: Props) => {
   return (
-    <main className="flex flex-1 flex-col gap-2  lg:gap-4">
+    <main className="flex flex-1 flex-col gap-2 items-center justify-center  lg:gap-4">
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Pricing Plans </h1>
       </div>

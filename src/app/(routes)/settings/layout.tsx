@@ -51,7 +51,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           className="hidden dark:block"
         />
       </div>
-      <div className="hidden space-y-6 p-10 pb-16 md:block lg:mx-40 ">
+      <div className="hidden space-y-6 p-5 pb-16 md:block lg:mx-10 ">
         <div className="space-y-0.5">
           <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
           <p className="text-muted-foreground">

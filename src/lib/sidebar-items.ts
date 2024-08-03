@@ -5,6 +5,8 @@ import {
   Users,
   ChartPie,
   StoreIcon,
+  Archive,
+  Settings2,
 } from "lucide-react";
 
 export const sidebarItems = [
@@ -32,7 +34,7 @@ export const sidebarItems = [
 ];
 
 export const roleBasedItems = (role: string) => {
-  console.log("role", role);
+  // console.log("role", role);
 
   switch (role) {
     case "ADMIN":
@@ -91,25 +93,25 @@ export const roleBasedItems = (role: string) => {
     case "PERSONAL":
       return [
         {
-          name: "Analytics",
-          href: "/analytics",
-          icon: ChartPie,
-        },
-        {
           name: "Workspace",
           href: "/workspace",
           icon: LayoutGrid,
         },
         {
-          name: "Teams",
-          href: "/teams",
-          icon: Users,
+          name: "Archive",
+          href: "/archive",
+          icon: Archive,
           badge: 6,
         },
         {
           name: "Subscription",
           href: "/subscription",
           icon: CreditCard,
+        },
+        {
+          name: "Settings",
+          href: "/settings",
+          icon: Settings2,
         },
       ];
     default:

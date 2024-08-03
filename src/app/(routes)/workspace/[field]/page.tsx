@@ -1,16 +1,17 @@
 "use client";
 
-import { ModeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import AccountPopover from "@/shared/common/user-profile";
+
 import { ArrowLeftIcon, SaveAllIcon, Loader2 } from "lucide-react";
 import dynamic from "next/dynamic";
 import * as React from "react";
 import { useCallback } from "react";
-import Link from "next/link";
+
 import { toast } from "sonner";
 import AppLoader from "@/shared/common/app-loader";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useFileStore } from "@/hooks/files-store";
+import { useSession } from "next-auth/react";
 
 const WorkspaceDocument = dynamic(
   () => import("@/shared/workspace/workspace-document"),
@@ -33,79 +34,64 @@ const WorkSpace = ({
   params: { field: string };
   searchParams: any;
 }) => {
-  const user = {
-    email: searchParams?.get("email"),
-    given_name: searchParams?.get("given_name"),
-    family_name: searchParams?.get("family_name"),
-    picture: searchParams?.get("picture"),
-    id: searchParams?.get("id"),
-  };
   const [content, setContent] = React.useState(null);
   const [whiteboard, setWhiteboard] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(false);
-  // const convex = useConvex();
 
-  // const getFileData = useCallback(async () => {
-  //   if (params.field) {
-  //     const result = await convex.query(api.file.getFileById, {
-  //       /* @ts-ignore */
-  //       _id: params.field,
-  //     });
+  const { isLoading, getFile, file, updateFile } = useFileStore();
 
-  //     setTimeout(() => {
-  //       if (result?.document) {
-  //         setContent(JSON.parse(result.document));
-  //       }
-  //       if (result?.whiteboard) {
-  //         setWhiteboard(JSON.parse(result.whiteboard));
-  //       }
-  //       setIsLoading(false);
-  //     }, 600);
-  //   }
-  // }, [convex, params.field]);
+  const { data: session } = useSession();
 
-  // const updateDocument = useMutation(api.file.updateFileDoc);
-  // const updateWhiteboard = useMutation(api.file.updateFileWhiteboard);
+  // @ts-ignore
+  const userId = session?.user?.id;
 
   const handleSave = useCallback(async () => {
     if (!params.field) {
       return;
     }
 
-    // try {
-    //   if (content) {
-    //     await updateDocument({
-    //       /* @ts-ignore */
+    try {
+      // Await the updateFile call to ensure it completes before proceeding
+      // @ts-ignore
+      await updateFile({
+        // @ts-ignore
+        id: params.field, // Assuming params.field is the correct ID
+        // @ts-ignore
+        content: content,
+        // @ts-ignore
+        whiteboard: whiteboard,
+      });
 
-    //       _id: params.field,
-    //       document: JSON.stringify(content),
-    //     });
-    //   }
+      toast.success("File saved successfully");
+    } catch (error) {
+      console.error("Error saving file:", error); // Use console.error for better error logging
 
-    //   if (whiteboard) {
-    //     await updateWhiteboard({
-    //       /* @ts-ignore */
-
-    //       _id: params.field,
-    //       whiteboard: JSON.stringify(whiteboard),
-    //     });
-    //   }
-
-    //   toast.success("File saved");
-    // } catch (error) {
-    //   console.error("Error saving file:", error);
-    //   toast.error("Failed to save file");
-    // }
-  }, [content, params.field, whiteboard]);
+      // Handle the error as needed
+      // @ts-ignore
+      toast.error(error.message || "Error saving file");
+    }
+  }, [content, params.field, whiteboard, updateFile]); // Make sure updateFile is included in the dependencies
 
   React.useEffect(() => {
     if (params.field) {
-      setIsLoading(true);
-      //   getFileData();
+      // @ts-ignore
+      getFile({
+        params: {
+          // @ts-ignore
+          fileId: params.field,
+          userId: userId,
+        },
+      });
     }
 
     return () => {};
   }, [params.field]);
+
+  React.useEffect(() => {
+    if (params.field && file) {
+      setContent(file.content);
+      setWhiteboard(file.whiteboard);
+    }
+  }, [file, params.field]);
 
   const holderName = "editor_create";
 
@@ -115,8 +101,45 @@ const WorkSpace = ({
         <AppLoader text="Loading workspace..." className="min-h-screen" />
       }
     >
+      <Card className="w-full">
+        <CardHeader className="flex-row  items-center justify-between max-w-full max-h-5 ">
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => window.history.back()}
+          >
+            <ArrowLeftIcon className="h-4 w-4 mr-2 " />
+            <CardTitle className="text-md font-medium">{file?.name}</CardTitle>
+          </div>
+
+          {!isLoading && (
+            <Button variant="default" className="px-4" onClick={handleSave}>
+              <SaveAllIcon className="h-4 w-4 mr-2" />
+              Save
+            </Button>
+          )}
+        </CardHeader>
+        <CardContent>
+          {isLoading && (
+            <AppLoader text="Loading workspace..." className="min-h-screen" />
+          )}
+          {!isLoading && params.field && file && (
+            <main className="grid grid-cols-1 md:grid-cols-2">
+              <div className="h-screen">
+                <WorkspaceDocument
+                  data={content}
+                  onChange={setContent}
+                  holder={holderName}
+                />
+              </div>
+              <div className="min-h-screen border-l">
+                <WorkspaceCanvas data={whiteboard} onChange={setWhiteboard} />
+              </div>
+            </main>
+          )}
+        </CardContent>
+      </Card>
       <div className="min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-        <header className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between mx-40 my-3">
+        {/* <header className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between mx-40 ">
           <div className="flex items-center gap-4">
             <Link
               href="/dashboard"
@@ -133,32 +156,10 @@ const WorkSpace = ({
               Save
             </Button>
             <ModeToggle />
-            <AccountPopover user={user} />
+            {session?.user && <AccountPopover user={session?.user} />}
           </div>
-        </header>
-        <Separator />
-
-        <main className="p-4 md:p-6 lg:p-8 lg:mx-40 md:mx-30">
-          {isLoading && (
-            <div className="flex justify-center items-center min-h-screen ">
-              <Loader2 className="h-10 w-10 animate-spin" />
-            </div>
-          )}
-          {!isLoading && params.field && (
-            <main className="grid grid-cols-1 md:grid-cols-2">
-              <div className="h-screen">
-                <WorkspaceDocument
-                  data={content}
-                  onChange={setContent}
-                  holder={holderName}
-                />
-              </div>
-              <div className="min-h-screen border-l">
-                <WorkspaceCanvas data={whiteboard} onChange={setWhiteboard} />
-              </div>
-            </main>
-          )}
-        </main>
+        </header> */}
+        {/* <Separator /> */}
       </div>
     </React.Suspense>
   );

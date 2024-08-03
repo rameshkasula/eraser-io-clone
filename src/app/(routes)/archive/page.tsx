@@ -34,7 +34,7 @@ const WorkSpace = () => {
   return (
     <main className="flex flex-1 flex-col gap-2  lg:gap-4">
       <div className="flex items-center">
-        <h1 className="text-lg font-semibold md:text-2xl">Files</h1>
+        <h1 className="text-lg font-semibold md:text-2xl">Archive</h1>
       </div>
 
       <WorkspaceTable isLoading={isLoading} filesList={files} />

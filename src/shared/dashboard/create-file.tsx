@@ -17,28 +17,66 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useTeams from "@/hooks/teams-store";
 import { toast } from "sonner";
+import { useFileStore } from "@/hooks/files-store";
+import { useSession } from "next-auth/react";
+import { ENV_VARIABLES } from "@/utils/constants";
 
 export default function CreateFile() {
   const [showAlert, setShowAlert] = React.useState(false);
   const [fileName, setFileName] = React.useState("");
-  const { selectedTeam, createOpen, setCreateOpen }: any = useTeams();
+
+  const { data: session } = useSession();
+
+  // files store
+  const { isFileOpen, setIsFileOpen, createFile, files, fetchFiles } =
+    useFileStore();
 
   const handleCreateFile = () => {
     if (fileName === "") {
       setShowAlert(true);
+      toast.warning("Please enter a file name");
     } else {
-      console.log("create file", fileName);
+      // @ts-ignore
+
+      fetchFiles({ params: { userId: session?.user?.id } });
+
+      if (
+        files.length == Number(ENV_VARIABLES.freeLimit) ||
+        files.length > Number(ENV_VARIABLES.freeLimit)
+      ) {
+        setIsFileOpen(false);
+        toast.error("You have reached your free limit");
+        return;
+      } else {
+        let payload = {
+          name: fileName, // @ts-ignore
+          userId: session?.user?.id, // @ts-ignore
+          createdBy: session?.user?.id,
+        };
+        createFile(payload)
+          .then((res) => {
+            console.log("res", res);
+            console.log("Available files", files);
+
+            setFileName("");
+            setIsFileOpen(false);
+            toast.success("File created successfully");
+          })
+          .catch((error) => {
+            console.log("error", error);
+            toast.error(error.message);
+          });
+      }
     }
   };
   return (
-    <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+    <Dialog open={isFileOpen} onOpenChange={() => setIsFileOpen(!isFileOpen)}>
       <DialogTrigger asChild>
         <Button
           size="sm"
-          className="w-full mb-2"
-          onClick={() => setCreateOpen(true)}
+          className="w-full"
+          onClick={() => setIsFileOpen(!isFileOpen)}
           variant="outline"
         >
           <PlusIcon className="w-5 h-5 mr-2" /> Create File

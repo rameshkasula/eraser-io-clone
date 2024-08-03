@@ -4,12 +4,15 @@ import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
 import dynamic from "next/dynamic";
-
-// TODO: lazy load
+import ThemeDataProvider from "./theme-data-provider";
 
 const AppLoader = dynamic(() => import("@/shared/common/app-loader"), {
   ssr: false,
 });
+
+// TODO: App loader
+
+// TODO: Add theme provider
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
@@ -19,7 +22,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
           <AppLoader text="Loading theme..." className="min-h-screen" />
         }
       >
-        {children}
+        <ThemeDataProvider>{children}</ThemeDataProvider>
       </React.Suspense>
     </NextThemesProvider>
   );
