@@ -236,12 +236,12 @@ export default function Dashboard() {
               </Table>
             </CardContent>
           </Card>
-          <Card x-chunk="dashboard-01-chunk-5">
+          <Card className="col-span-1" x-chunk="dashboard-01-chunk-5">
             <CardHeader>
               <CardTitle>Recent Sales</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-8">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <Avatar className="hidden h-9 w-9 sm:flex">
                   <AvatarImage src="/avatars/01.png" alt="Avatar" />
                   <AvatarFallback>OM</AvatarFallback>
@@ -256,7 +256,7 @@ export default function Dashboard() {
                 </div>
                 <div className="ml-auto font-medium">+$1,999.00</div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <Avatar className="hidden h-9 w-9 sm:flex">
                   <AvatarImage src="/avatars/02.png" alt="Avatar" />
                   <AvatarFallback>JL</AvatarFallback>

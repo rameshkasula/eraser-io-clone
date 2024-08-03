@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { sidebarItems } from "@/lib/sidebar-items";
+import { roleBasedItems } from "@/lib/sidebar-items";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/theme-toggle";
@@ -52,8 +52,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const { data: session } = useSession(); // get the client session
-
-  console.log("session", session);
+  // @ts-ignore
+  const sidebarItems = roleBasedItems(session?.user?.role ?? "ADMIN");
 
   const {
     teamsList,

@@ -9,13 +9,16 @@ type Props = {};
 const Banner = (props: Props) => {
   return (
     <div className="mx-auto flex flex-col items-baseline justify-center max-w-screen-xl px-4 py-32 lg:flex lg:max-h-screen lg:items-center">
-      <h2 className="text-center p-2 px-3 rounded-full  border">
-        see what's new |{" "}
-        <span className="font-bold text-primary cursor-pointer ">
-          {" "}
-          AI diagrams{" "}
-        </span>{" "}
-      </h2>
+      <div className="mx-auto max-w-xl text-center py-5">
+        <h2 className="text-center p-2 px-3 rounded-full  border">
+          see what's new |{" "}
+          <span className="font-bold text-primary cursor-pointer ">
+            {" "}
+            AI diagrams{" "}
+          </span>{" "}
+        </h2>
+      </div>
+
       <div className="mx-auto max-w-xl text-center py-5">
         <h1 className="text-3xl font-extrabold sm:text-5xl">
           Documents & Diagrams

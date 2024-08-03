@@ -23,9 +23,9 @@ let navItems = [
 const Header = () => {
   return (
     <header className="flex justify-between items-center h-16 max-w-screen-xl mx-auto px-4">
-      <h1 className="text-xl font-bold">Eraser.io</h1>
+      <h1 className="text-xl font-bold">Kasz.io</h1>
 
-      <nav className="flex flex-1 items-center justify-end md:justify-between px-6 ">
+      {/* <nav className="flex flex-1 items-center justify-end md:justify-between px-6 ">
         <ul className="flex items-center gap-6 text-sm ">
           {navItems.map((item) => (
             <li key={item.name}>
@@ -35,7 +35,7 @@ const Header = () => {
             </li>
           ))}
         </ul>
-      </nav>
+      </nav> */}
       <div className="flex items-center gap-6">
         <Link href={"/auth/sign-in"}>
           <Button variant="default" className="px-4 ">
