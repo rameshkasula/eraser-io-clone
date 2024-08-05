@@ -228,6 +228,8 @@ export default function WorkspaceTable({
       columnVisibility,
       rowSelection,
     },
+
+    debugTable: true,
   });
 
   const [filterValue, setFilterValue] = React.useState("");
@@ -294,12 +296,12 @@ export default function WorkspaceTable({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="divide-y  ">
             {isLoading ? (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-40 text-center"
                 >
                   <AppLoader text="Loading files..." />
                 </TableCell>
@@ -310,9 +312,13 @@ export default function WorkspaceTable({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   //  className="hover:bg-muted "
+
+                  onClick={() => {
+                    router.push(`/workspace/${row.original.id}`);
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="capitalize max-h-2  ">
+                    <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

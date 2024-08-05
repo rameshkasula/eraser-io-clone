@@ -42,6 +42,7 @@ import { axiosClient } from "@/utils/axios-helper";
 import { useFileStore } from "@/hooks/files-store";
 import { ENV_VARIABLES } from "@/utils/constants";
 import { ThemeColorToggle } from "@/components/color-toggle";
+import Filters from "@/shared/layouts/Filters";
 
 const AccountPopover = dynamic(() => import("@/shared/common/user-profile"), {
   ssr: false,
@@ -301,6 +302,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             <AccountPopover user={session?.user} />
           </header>
           <div className="flex flex-1 flex-col gap-2 p-4 lg:gap-4 lg:p-6">
+            <Filters />
             {children}
           </div>
         </div>

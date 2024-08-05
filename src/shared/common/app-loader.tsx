@@ -18,7 +18,7 @@ export default function AppLoader({
         className ? className : "min-h-screen/2"
       )}
     >
-      <Loader2 className="h-10 w-10 animate-spin" />
+      <Loader2 className="h-10 w-10 animate-spin text-primary " />
       {text && (
         <span className="font-semibold text-lg text-primary ">{text}</span>
       )}
