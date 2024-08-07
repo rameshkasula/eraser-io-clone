@@ -7,7 +7,7 @@ import prisma from "@/utils/prisma-client";
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const body = await req.json();
-    console.log(body);
+
     const { name, email, password } = body;
 
     if (!name || !email || !password) {
@@ -36,11 +36,32 @@ export async function POST(req: NextRequest, res: NextResponse) {
     console.log(error);
     return NextResponse.json(
       {
-        message: "Something went wrong",
+        // @ts-ignore
+        message: error?.message || "Something went wrong",
+        error: error,
+        tip: "Internal Server Error",
       },
       { status: 500 }
     );
   } finally {
     await prisma.$disconnect();
+  }
+}
+
+// API to list all users
+export async function GET() {
+  try {
+    const users = await prisma.user.findMany({});
+    return NextResponse.json({ users }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error,
+        // @ts-ignore
+        message: error?.message || "An error occurred.",
+        tip: "Internal Server Error",
+      },
+      { status: 500 }
+    );
   }
 }

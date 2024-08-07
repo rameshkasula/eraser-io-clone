@@ -65,7 +65,7 @@ const Page = () => {
         password: data.password,
       };
 
-      const response = await axiosClient.post("/auth/create", payload);
+      const response = await axiosClient.post("/auth/users", payload);
 
       console.log(response.data);
 

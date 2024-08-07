@@ -22,16 +22,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
   Table,
   TableBody,
   TableCell,
@@ -98,7 +88,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </div>
-        <div className="grid gap-3 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-1 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
           <Card className="xl:col-span-2" x-chunk="dashboard-01-chunk-5">
             <CardHeader className="flex flex-row items-center">
               <div className="grid gap-2">

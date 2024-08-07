@@ -45,6 +45,11 @@ export const roleBasedItems = (role: string) => {
           icon: ChartPie,
         },
         {
+          name: "Users",
+          href: "/users",
+          icon: Users,
+        },
+        {
           name: "Workspace",
           href: "/workspace",
           icon: LayoutGrid,
