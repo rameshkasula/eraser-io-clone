@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDownIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useTheme } from "next-themes";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -16,11 +18,20 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { toast } from "sonner";
+import { ThemeColorToggle } from "@/components/color-toggle";
 
 const appearanceFormSchema = z.object({
-  theme: z.enum(["light", "dark"], {
+  theme: z.enum(["light", "dark", "system"], {
     required_error: "Please select a theme.",
   }),
   font: z.enum(["inter", "manrope", "system"], {
@@ -29,14 +40,16 @@ const appearanceFormSchema = z.object({
   }),
 });
 
-type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
-
-// This can come from your database or API.
-const defaultValues: Partial<AppearanceFormValues> = {
-  theme: "light",
-};
-
 export function AppearanceForm() {
+  const { theme, setTheme } = useTheme();
+
+  type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
+
+  // This can come from your database or API.
+  const defaultValues: Partial<AppearanceFormValues> = {
+    // @ts-ignore
+    theme: theme ?? "light",
+  };
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
     defaultValues,
@@ -49,6 +62,7 @@ export function AppearanceForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <ThemeColorToggle />
         <FormField
           control={form.control}
           name="font"
@@ -57,17 +71,20 @@ export function AppearanceForm() {
               <FormLabel>Font</FormLabel>
               <div className="relative w-max">
                 <FormControl>
-                  <select
-                    className={cn(
-                      buttonVariants({ variant: "outline" }),
-                      "w-[200px] appearance-none font-normal"
-                    )}
-                    {...field}
-                  >
-                    <option value="inter">Inter</option>
-                    <option value="manrope">Manrope</option>
-                    <option value="system">System</option>
-                  </select>
+                  <Select {...field}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select a fruit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Font</SelectLabel>
+
+                        <SelectItem value="inter">Inter</SelectItem>
+                        <SelectItem value="manrope">Manrope</SelectItem>
+                        <SelectItem value="system">System</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
               </div>
@@ -96,7 +113,11 @@ export function AppearanceForm() {
                 <FormItem>
                   <FormLabel className="[&:has([data-state=checked])>div]:border-primary">
                     <FormControl>
-                      <RadioGroupItem value="light" className="sr-only" />
+                      <RadioGroupItem
+                        value="light"
+                        className="sr-only"
+                        onClick={() => setTheme("light")}
+                      />
                     </FormControl>
                     <div className="items-center rounded-md border-2 border-muted p-1 hover:border-accent">
                       <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
@@ -122,7 +143,11 @@ export function AppearanceForm() {
                 <FormItem>
                   <FormLabel className="[&:has([data-state=checked])>div]:border-primary">
                     <FormControl>
-                      <RadioGroupItem value="dark" className="sr-only" />
+                      <RadioGroupItem
+                        value="dark"
+                        className="sr-only"
+                        onClick={() => setTheme("dark")}
+                      />
                     </FormControl>
                     <div className="items-center rounded-md border-2 border-muted bg-popover p-1 hover:bg-accent hover:text-accent-foreground">
                       <div className="space-y-2 rounded-sm bg-slate-950 p-2">
@@ -150,7 +175,7 @@ export function AppearanceForm() {
           )}
         />
 
-        <Button type="submit">Update preferences</Button>
+        {/* <Button type="submit">Update preferences</Button> */}
       </form>
     </Form>
   );

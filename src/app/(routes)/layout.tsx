@@ -23,7 +23,6 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { roleBasedItems } from "@/lib/sidebar-items";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import { ModeToggle } from "@/components/theme-toggle";
 import { Progress } from "@/components/ui/progress";
 import dynamic from "next/dynamic";
 import * as React from "react";
@@ -41,7 +40,6 @@ import { useSession } from "next-auth/react";
 import { axiosClient } from "@/utils/axios-helper";
 import { useFileStore } from "@/hooks/files-store";
 import { ENV_VARIABLES } from "@/utils/constants";
-import { ThemeColorToggle } from "@/components/color-toggle";
 import Filters from "@/shared/layouts/Filters";
 
 const AccountPopover = dynamic(() => import("@/shared/common/user-profile"), {
@@ -297,12 +295,12 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             <div className="w-full flex-1">
               <form>{/* <AppCommand /> */}</form>
             </div>
-            <ThemeColorToggle />
-            <ModeToggle />
+            {/* <ThemeColorToggle />
+            <ModeToggle /> */}
             <AccountPopover user={session?.user} />
           </header>
           <div className="flex flex-1 flex-col gap-2 p-4 lg:gap-4 lg:p-6">
-            <Filters />
+            {!pathname?.includes("settings") && <Filters />}
             {children}
           </div>
         </div>

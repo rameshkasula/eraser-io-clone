@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/popover";
 import moment from "moment";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 const languages = [
   { label: "English", value: "en" },
@@ -56,6 +57,17 @@ const accountFormSchema = z.object({
     .max(30, {
       message: "Name must not be longer than 30 characters.",
     }),
+  email: z
+    .string()
+    .email({
+      message: "Please enter a valid email address.",
+    })
+    .min(5, {
+      message: "Email must be at least 5 characters.",
+    })
+    .max(30, {
+      message: "Email must not be longer than 30 characters.",
+    }),
   dob: z.date({
     required_error: "A date of birth is required.",
   }),
@@ -64,18 +76,23 @@ const accountFormSchema = z.object({
   }),
 });
 
-type AccountFormValues = z.infer<typeof accountFormSchema>;
-
-// This can come from your database or API.
-const defaultValues: Partial<AccountFormValues> = {
-  // name: "Your name",
-  // dob: new Date("2023-01-23"),
-};
-
 export function AccountForm() {
+  const { data: session } = useSession();
+
+  console.log("session", session);
+
+  type AccountFormValues = z.infer<typeof accountFormSchema>;
+
+  // This can come from your database or API.
+  const defaultValues: Partial<AccountFormValues> = {
+    name: session?.user?.name ?? "Ramesh",
+    dob: new Date("2023-01-23"),
+    language: "en",
+    email: session?.user?.email ?? " Ramesh ",
+  };
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
-    defaultValues,
+    defaultValues: defaultValues,
   });
 
   function onSubmit(data: AccountFormValues) {
@@ -97,6 +114,23 @@ export function AccountForm() {
               <FormDescription>
                 This is the name that will be displayed on your profile and in
                 emails.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="Email" {...field} />
+              </FormControl>
+              <FormDescription>
+                We will use this email to send you updates and notifications.
               </FormDescription>
               <FormMessage />
             </FormItem>

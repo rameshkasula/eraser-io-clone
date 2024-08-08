@@ -45,13 +45,6 @@ function Filters() {
     setSearch("");
   };
 
-  //   console.log(
-  //     "startDate",
-  //     moment(startDate).format("MMM DD, YYYY"),
-  //     "endDate",
-  //     moment(endDate).format("MMM DD, YYYY")
-  //   );
-
   return (
     <main className="flex justify-between max-w-screen-xl">
       <div className="flex items-center gap-6">

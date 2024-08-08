@@ -138,29 +138,6 @@ const WorkSpace = ({
           )}
         </CardContent>
       </Card>
-      <div className="min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-        {/* <header className="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between mx-40 ">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-2 font-semibold"
-            >
-              <ArrowLeftIcon className="h-4 w-4" />
-              <span className="">{searchParams?.title}</span>
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button variant="outline" onClick={handleSave}>
-              <SaveAllIcon className="h-4 w-4 mr-2" />
-              Save
-            </Button>
-            <ModeToggle />
-            {session?.user && <AccountPopover user={session?.user} />}
-          </div>
-        </header> */}
-        {/* <Separator /> */}
-      </div>
     </React.Suspense>
   );
 };

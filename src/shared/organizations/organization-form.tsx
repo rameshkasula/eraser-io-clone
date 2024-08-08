@@ -94,40 +94,34 @@ function OrganizationForm() {
       });
   };
   return (
-    <main className="flex flex-col justify-center items-center ">
-      <Card className="w-full max-w-md flex flex-col gap-4   ">
-        <CardHeader>
-          <CardTitle>Sign In</CardTitle>
-          <CardDescription> Sign in to your account </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form
-              noValidate
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="max-w-md w-full flex flex-col gap-4 "
-            >
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Organization Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter your organization name"
-                          type="text"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
+    <main className="w-full">
+      <Form {...form}>
+        <form
+          noValidate
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className="max-w-md w-full flex flex-col "
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Organization Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your organization name"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
 
-              <FormField
+          {/* <FormField
                 control={form.control}
                 name="address"
                 render={({ field }) => {
@@ -165,29 +159,29 @@ function OrganizationForm() {
                     </FormItem>
                   );
                 }}
-              />
+              /> */}
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter your organization email"
-                          type="email"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your organization email"
+                      type="email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
 
-              <FormField
+          {/* <FormField
                 control={form.control}
                 name="website"
                 render={({ field }) => {
@@ -205,9 +199,9 @@ function OrganizationForm() {
                     </FormItem>
                   );
                 }}
-              />
+              /> */}
 
-              <FormField
+          {/* <FormField
                 control={form.control}
                 name="city"
                 render={({ field }) => {
@@ -225,9 +219,9 @@ function OrganizationForm() {
                     </FormItem>
                   );
                 }}
-              />
+              /> */}
 
-              <FormField
+          {/* <FormField
                 control={form.control}
                 name="state"
                 render={({ field }) => {
@@ -245,42 +239,40 @@ function OrganizationForm() {
                     </FormItem>
                   );
                 }}
-              />
+              /> */}
 
-              <FormField
-                control={form.control}
-                name="country"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel>Country</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter your organization country"
-                          type="text"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Country</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your organization country"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
 
-              <Button
-                type="submit"
-                className="w-full my-3 "
-                disabled={organizationData.isLoading}
-              >
-                {organizationData.isLoading && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                Submit
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+          <Button
+            type="submit"
+            className="w-full my-3 "
+            disabled={organizationData.isLoading}
+          >
+            {organizationData.isLoading && (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            Submit
+          </Button>
+        </form>
+      </Form>
     </main>
   );
 }
