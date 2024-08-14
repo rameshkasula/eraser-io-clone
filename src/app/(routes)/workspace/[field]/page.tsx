@@ -93,8 +93,6 @@ const WorkSpace = ({
     }
   }, [file, params.field]);
 
-  const holderName = "editor_create";
-
   return (
     <React.Suspense
       fallback={
@@ -126,9 +124,9 @@ const WorkSpace = ({
             <main className="grid grid-cols-1 md:grid-cols-2">
               <div className="h-screen">
                 <WorkspaceDocument
-                  data={content}
+                  holder={"editor"}
+                  initialData={content}
                   onChange={setContent}
-                  holder={holderName}
                 />
               </div>
               <div className="min-h-screen border-l">

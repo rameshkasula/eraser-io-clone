@@ -3,7 +3,11 @@
 import prisma from "@/utils/prisma-client";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest, response: NextResponse) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { slug: string } },
+  response: NextResponse
+) {
   try {
     const fileId = request.nextUrl.searchParams.get("fileId");
 
@@ -11,7 +15,7 @@ export async function GET(request: NextRequest, response: NextResponse) {
 
     const file = await prisma.file.findUnique({
       // @ts-ignore
-      where: { id: fileId },
+      where: { id: params.slug },
       include: { user: true },
     });
     return NextResponse.json({ file }, { status: 200 });

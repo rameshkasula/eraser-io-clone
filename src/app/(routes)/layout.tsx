@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import Link from "next/link";
@@ -26,7 +27,7 @@ import { usePathname } from "next/navigation";
 import { Progress } from "@/components/ui/progress";
 import dynamic from "next/dynamic";
 import * as React from "react";
-import useTeams, { Team, TeamsState } from "@/hooks/teams-store";
+import useTeams, { Team } from "@/hooks/teams-store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AppCommand from "@/shared/common/app-command";
 import CreateFile from "@/shared/dashboard/create-file";
@@ -37,10 +38,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useSession } from "next-auth/react";
-import { axiosClient } from "@/utils/axios-helper";
 import { useFileStore } from "@/hooks/files-store";
 import { ENV_VARIABLES } from "@/utils/constants";
 import Filters from "@/shared/layouts/Filters";
+import { useUserStore } from "@/hooks/users-store";
 
 const AccountPopover = dynamic(() => import("@/shared/common/user-profile"), {
   ssr: false,
@@ -60,49 +61,23 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
 
   const sidebarItems = roleBasedItems(userRole);
 
-  const {
-    teamsList,
-    setTeamsList,
-    setIsLoading,
-    selectedTeam,
-    setSelectedTeam,
-    filesList,
-    setFilesList,
-    createOpen,
-  }: any = useTeams();
+  const { teamsList, selectedTeam, setSelectedTeam, fetchTeamsList }: any =
+    useTeams();
+  const { user, setUser }: any = useUserStore();
 
   const { files, isLoading } = useFileStore();
 
   React.useEffect(() => {
-    async function getTeamsList() {
-      setIsLoading(true);
-      try {
-        const result = await axiosClient.get("/teams", {
-          params: {
-            // @ts-ignore
+    if (session) {
+      if (!user) {
+        setUser(session?.user);
+      }
 
-            organizationId: session?.user?.organizationId ?? session?.user?.id,
-          },
-        });
-
-        //    console.log("result", result.data);
-
-        if (result.status == 200 && result?.data?.teams?.length > 0) {
-          setSelectedTeam(result.data.teams[0].id);
-          setTeamsList([...result.data.teams]);
-        }
-      } catch (error) {
-        console.log("teams error", error);
-      } finally {
-        setIsLoading(false);
+      if (userRole === "BUSINESS") {
+        fetchTeamsList();
       }
     }
-
-    // @ts-ignore
-    if (session && userRole === "BUSINESS") {
-      getTeamsList();
-    }
-  }, [session, pathname]);
+  }, [session, user, pathname]);
 
   const progressValue = (files?.length / 5) * 100;
 

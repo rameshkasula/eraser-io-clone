@@ -1,36 +1,42 @@
 import { axiosClient } from "@/utils/axios-helper";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-interface UserState {
-  isLoading: boolean;
-  isError: boolean;
-  errorMessage: string | null;
-  users: any[];
+export const useUserStore = create(
+  persist(
+    (set) => ({
+      isLoading: false,
+      isError: false,
+      errorMessage: null,
+      users: [],
 
-  // function to fetch users
-  fetchUsers: () => void;
-}
+      // logged in user
+      user: null,
 
-export const useUserStore = create<UserState>((set) => ({
-  isLoading: false,
-  isError: false,
-  errorMessage: null,
-  users: [],
+      setUser: (user: any) => {
+        set({ user });
+      },
 
-  // function to fetch users
-  fetchUsers: async () => {
-    set({ isLoading: true, isError: false });
-    try {
-      const response = await axiosClient.get("/auth/users");
-      set({ users: response.data?.users || [] });
-    } catch (error) {
-      set({
-        isError: true,
-        // @ts-ignore
-        errorMessage: error?.message || "Error fetching users",
-      });
-    } finally {
-      set({ isLoading: false });
+      // function to fetch users
+      fetchUsers: async () => {
+        set({ isLoading: true, isError: false });
+        try {
+          const response = await axiosClient.get("/auth/users");
+          set({ users: response.data?.users || [] });
+        } catch (error) {
+          set({
+            isError: true,
+            // @ts-ignore
+            errorMessage: error?.message || "Error fetching users",
+          });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+    }),
+    {
+      name: "users-store", // name of the store
+      getStorage: () => localStorage, // (optional) by default, 'localStorage' is used
     }
-  },
-}));
+  )
+);
