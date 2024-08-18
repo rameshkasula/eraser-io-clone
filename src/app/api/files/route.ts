@@ -1,8 +1,7 @@
 import prisma from "@/utils/prisma-client";
 import { NextResponse, NextRequest } from "next/server";
 
-// TODO : API to create file
-
+// NOTE : API to create file
 export async function POST(request: NextRequest, response: NextResponse) {
   try {
     const body = await request.json();
@@ -25,8 +24,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
   }
 }
 
-// TODO : API to get file
-
+// NOTE : API to get file
 export async function GET(request: NextRequest, response: NextResponse) {
   try {
     const files = await prisma.file.findMany({

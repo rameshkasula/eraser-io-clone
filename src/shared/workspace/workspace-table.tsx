@@ -45,6 +45,7 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import AppLoader from "../common/app-loader";
 import Link from "next/link";
+import { useFileStore } from "@/hooks/files-store";
 
 const CreateFile = dynamic(() => import("../dashboard/create-file"), {
   ssr: false,
@@ -90,110 +91,6 @@ export type Payment = {
   email: string;
 };
 
-export const columns: ColumnDef<Payment>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: "File Name",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "user",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => {
-      return (
-        <div className="lowercase">
-          {/* @ts-ignore*/}
-          {row.getValue("user")?.name}
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "updatedAt",
-    header: () => <div className="text-right">Last Modified At</div>,
-    cell: ({ row }) => {
-      const amount: number = row.getValue("updatedAt");
-
-      // Format the amount as a dollar amount
-      const formatted = moment(amount).format("MMMM Do YYYY, hh:mm A");
-
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <Link
-              /* @ts-ignore*/
-              href={`/workspace/${payment.id}?title=${payment?.name}`}
-              passHref
-            >
-              <DropdownMenuItem>View File</DropdownMenuItem>
-            </Link>
-
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Delete File
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
 export default function WorkspaceTable({
   isLoading,
   filesList,
@@ -201,7 +98,111 @@ export default function WorkspaceTable({
   isLoading: boolean;
   filesList: any[];
 }) {
-  const router = useRouter();
+  const columns: ColumnDef<Payment>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "name",
+      header: "File Name",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("name")}</div>
+      ),
+    },
+    {
+      accessorKey: "user",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Email
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="lowercase">
+            {/* @ts-ignore*/}
+            {row.getValue("user")?.name}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "updatedAt",
+      header: () => <div className="text-right">Last Modified At</div>,
+      cell: ({ row }) => {
+        const amount: number = row.getValue("updatedAt");
+
+        // Format the amount as a dollar amount
+        const formatted = moment(amount).format("MMMM Do YYYY, hh:mm A");
+
+        return <div className="text-right font-medium">{formatted}</div>;
+      },
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        const payment = row.original;
+
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem
+                onClick={() => navigator.clipboard.writeText(payment.id)}
+              >
+                Copy payment ID
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <Link
+                /* @ts-ignore*/
+                href={`/workspace/${payment.id}?title=${payment?.name}`}
+                passHref
+              >
+                <DropdownMenuItem>View File</DropdownMenuItem>
+              </Link>
+
+              <DropdownMenuItem onClick={() => deleteFile(payment.id)}>
+                Delete File
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
+
+  const { deleteFile } = useFileStore();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -313,9 +314,9 @@ export default function WorkspaceTable({
                   data-state={row.getIsSelected() && "selected"}
                   //  className="hover:bg-muted "
 
-                  onClick={() => {
-                    router.push(`/workspace/${row.original.id}`);
-                  }}
+                  // onClick={() => {
+                  //   router.push(`/workspace/${row.original.id}`);
+                  // }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

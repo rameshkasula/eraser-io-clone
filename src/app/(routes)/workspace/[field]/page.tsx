@@ -12,13 +12,14 @@ import AppLoader from "@/shared/common/app-loader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFileStore } from "@/hooks/files-store";
 import { useSession } from "next-auth/react";
+import EditorBlock from "@/shared/workspace/workspace-document";
 
-const WorkspaceDocument = dynamic(
-  () => import("@/shared/workspace/workspace-document"),
-  {
-    ssr: false,
-  }
-);
+// const WorkspaceDocument = dynamic(
+//   () => import("@/shared/workspace/workspace-document"),
+//   {
+//     ssr: false,
+//   }
+// );
 
 const WorkspaceCanvas = dynamic(
   () => import("@/shared/workspace/workspace-canvas"),
@@ -93,6 +94,13 @@ const WorkSpace = ({
     }
   }, [file, params.field]);
 
+  const handleContentChange = (data: any) => {
+    // Do something with the data
+    setContent(data);
+  };
+
+  console.log("ffffffffff", file);
+
   return (
     <React.Suspense
       fallback={
@@ -103,7 +111,10 @@ const WorkSpace = ({
         <CardHeader className="flex-row  items-center justify-between max-w-full max-h-5 ">
           <div
             className="flex items-center cursor-pointer"
-            onClick={() => window.history.back()}
+            onClick={() => {
+              window.history.back();
+              setContent(null);
+            }}
           >
             <ArrowLeftIcon className="h-4 w-4 mr-2 " />
             <CardTitle className="text-md font-medium">{file?.name}</CardTitle>
@@ -120,18 +131,18 @@ const WorkSpace = ({
           {isLoading && (
             <AppLoader text="Loading workspace..." className="min-h-screen" />
           )}
-          {!isLoading && params.field && file && (
-            <main className="grid grid-cols-1 md:grid-cols-2">
+          {!isLoading && params.field && (
+            <main className="grid grid-cols-1 md:grid-cols-2 overflow-y-auto scroll-smooth  ">
               <div className="h-screen">
-                <WorkspaceDocument
-                  holder={"editor"}
-                  initialData={content}
-                  onChange={setContent}
+                <EditorBlock
+                  data={content}
+                  onChange={handleContentChange}
+                  holder="editor_app"
                 />
               </div>
-              <div className="min-h-screen border-l">
+              {/* <div className="min-h-screen border-l">
                 <WorkspaceCanvas data={whiteboard} onChange={setWhiteboard} />
-              </div>
+              </div> */}
             </main>
           )}
         </CardContent>

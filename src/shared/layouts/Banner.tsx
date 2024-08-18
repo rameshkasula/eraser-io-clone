@@ -35,7 +35,10 @@ const Banner = (props: Props) => {
 
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Link href="/dashboard">
-            <Button variant="default" className="px-12 py-3 border-primary ">
+            <Button
+              variant="default"
+              className="px-12 py-3 border-primary text-white "
+            >
               Try Eraser <ArrowRightIcon className="w-4 h-4 ml-2" />
             </Button>
           </Link>

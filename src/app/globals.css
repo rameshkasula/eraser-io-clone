@@ -67,3 +67,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* styles.css or your global CSS file */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

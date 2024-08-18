@@ -54,6 +54,7 @@ const AppLoader = dynamic(() => import("@/shared/common/app-loader"), {
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
+  // current tab
   const { data: session } = useSession(); // get the client session
 
   // @ts-ignore
@@ -65,7 +66,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     useTeams();
   const { user, setUser }: any = useUserStore();
 
-  const { files, isLoading } = useFileStore();
+  const { files } = useFileStore();
 
   React.useEffect(() => {
     if (session) {
@@ -73,7 +74,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
         setUser(session?.user);
       }
 
-      if (userRole === "BUSINESS") {
+      if (userRole != "PERSONAL") {
         fetchTeamsList();
       }
     }
@@ -143,7 +144,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                     href={item.href}
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2  transition-all hover:text-primary",
-                      pathname === item.href
+                      pathname.includes(item.href)
                         ? "bg-primary/10 text-primary"
                         : "text-muted-foreground"
                     )}
@@ -275,7 +276,9 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             <AccountPopover user={session?.user} />
           </header>
           <div className="flex flex-1 flex-col gap-2 p-4 lg:gap-4 lg:p-6">
-            {!pathname?.includes("settings") && <Filters />}
+            {!pathname?.includes("settings") &&
+              !pathname?.includes("links") &&
+              !pathname?.includes("workspace/") && <Filters />}
             {children}
           </div>
         </div>

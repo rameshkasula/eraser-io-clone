@@ -29,6 +29,7 @@
     "@editorjs/table": "^2.3.0",
     "@editorjs/warning": "^1.4.0",
     "@excalidraw/excalidraw": "^0.17.6",
+    "@google/generative-ai": "^0.17.0",
     "@hookform/resolvers": "^3.9.0",
     "@kinde-oss/kinde-auth-nextjs": "^2.3.6",
     "@next-auth/prisma-adapter": "^1.0.7",

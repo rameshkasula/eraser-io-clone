@@ -1,29 +1,25 @@
-// single File => GET, PUT, DELETE
-
 import prisma from "@/utils/prisma-client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } },
-  response: NextResponse
+  { params }: { params: { slug: string } }
 ) {
   try {
-    const fileId = request.nextUrl.searchParams.get("fileId");
-
-    console.log("ffffffffffff", fileId);
-
     const file = await prisma.file.findUnique({
-      // @ts-ignore
       where: { id: params.slug },
       include: { user: true },
     });
+
+    if (!file) {
+      return NextResponse.json({ message: "File not found." }, { status: 404 });
+    }
+
     return NextResponse.json({ file }, { status: 200 });
-  } catch (error) {
-    console.log(" files api error ", error);
+  } catch (error: any) {
+    console.error("Files API error:", error);
     return NextResponse.json(
       {
-        error, // @ts-ignore
         message: error?.message || "An error occurred.",
         tip: "Internal Server Error",
       },
@@ -32,19 +28,32 @@ export async function GET(
   }
 }
 
-export async function PUT(request: NextRequest, response: NextResponse) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   try {
     const body = await request.json();
     const { id, ...data } = body;
+
+    // Ensure the ID matches the slug parameter
+    if (id !== params.slug) {
+      return NextResponse.json(
+        { message: "ID in the body does not match the slug." },
+        { status: 400 }
+      );
+    }
+
     const file = await prisma.file.update({
-      where: { id: body.id },
+      where: { id: params.slug },
       data: data,
     });
+
     return NextResponse.json({ file }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
+    console.error("Files API error:", error);
     return NextResponse.json(
       {
-        error, // @ts-ignore
         message: error?.message || "An error occurred.",
         tip: "Internal Server Error",
       },
@@ -53,17 +62,20 @@ export async function PUT(request: NextRequest, response: NextResponse) {
   }
 }
 
-export async function DELETE(request: NextRequest, response: NextResponse) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { slug: string } }
+) {
   try {
-    const body = await request.json();
     const file = await prisma.file.delete({
-      where: { id: body.id },
+      where: { id: params.slug },
     });
+
     return NextResponse.json({ file }, { status: 200 });
-  } catch (error) {
+  } catch (error: any) {
+    console.error("Files API error:", error);
     return NextResponse.json(
       {
-        error, // @ts-ignore
         message: error?.message || "An error occurred.",
         tip: "Internal Server Error",
       },

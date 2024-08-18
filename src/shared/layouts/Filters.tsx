@@ -71,7 +71,7 @@ function Filters() {
         <Button
           size={"sm"}
           variant="default"
-          className="px-4 "
+          className="px-4  rounded-md text-white"
           onClick={handleApply}
         >
           Apply{" "}

@@ -7,6 +7,8 @@ import {
   StoreIcon,
   Archive,
   Settings2,
+  NotepadText,
+  Network,
 } from "lucide-react";
 
 export const sidebarItems = [
@@ -109,7 +111,12 @@ export const roleBasedItems = (role: string) => {
           badge: 6,
         },
         {
-          name: "Subscription",
+          name: "Links",
+          href: "/links",
+          icon: Network,
+        },
+        {
+          name: "Billing",
           href: "/subscription",
           icon: CreditCard,
         },

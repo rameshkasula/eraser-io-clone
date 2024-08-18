@@ -38,7 +38,7 @@ const Header = () => {
       </nav> */}
       <div className="flex items-center gap-6">
         <Link href={"/auth/sign-in"}>
-          <Button variant="default" className="px-4 ">
+          <Button variant="default" className="px-4 text-white ">
             Login
           </Button>
         </Link>

@@ -4,7 +4,7 @@ import * as React from "react";
 
 export default function NotFoundPage() {
   return (
-    <div className="grid h-screen place-content-center bg-white px-4">
+    <div className="grid h-screen place-content-center bg-primary/40 px-4">
       <div className="text-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -25,11 +25,13 @@ export default function NotFoundPage() {
           </g>
         </svg>
 
-        <h1 className="mt-6 text-2xl font-bold tracking-tight text-primary sm:text-4xl">
+        <h1 className="mt-6 text-2xl font-bold tracking-tight text-primary sm:text-4xl text-white ">
           Uh-oh!
         </h1>
 
-        <p className="mt-4 text-primary">We are unable to find that page.</p>
+        <p className="mt-4 text-secondary-foreground">
+          We are unable to find that page.
+        </p>
       </div>
     </div>
   );
